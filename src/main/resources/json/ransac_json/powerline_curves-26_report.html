@@ -1,0 +1,2287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RANSAC电力线重建报告</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+        .header { background: #2c3e50; color: white; padding: 20px; border-radius: 5px; }
+        .summary { background: #ecf0f1; padding: 15px; margin: 20px 0; border-radius: 5px; }
+        .curve-item { background: #f8f9fa; margin: 10px 0; padding: 15px; border-left: 4px solid #3498db; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .stat-card { background: white; padding: 15px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .good { color: #27ae60; } .warning { color: #f39c12; } .error { color: #e74c3c; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚀 RANSAC电力线重建报告</h1>
+        <p>生成时间: 2025-07-23 17:22:32</p>
+    </div>
+    
+    <div class="summary">
+        <h2>📊 处理概要</h2>
+        <div class="stats">
+            <div class="stat-card">
+                <h3>📁 输入数据</h3>
+                <p>总点数: 28,726</p>
+                <p>电力线段数: 193</p>
+            </div>
+            <div class="stat-card">
+                <h3>📈 输出结果</h3>
+                <p>拟合曲线数: 245</p>
+                <p>成功率: 100.0%</p>
+            </div>
+            <div class="stat-card">
+                <h3>⏱️ 处理时间</h3>
+                <p>总时间: 3.66秒</p>
+                <p>拟合时间: 3.32秒</p>
+            </div>
+            <div class="stat-card">
+                <h3>🎯 质量指标</h3>
+                <p>平均RMSE: 0.295米</p>
+                <p>平均内点比: 0.97</p>
+            </div>
+        </div>
+    </div>
+    
+    <h2>📋 拟合曲线详情</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>点数</th>
+                <th>长度(m)</th>
+                <th>RMSE(m)</th>
+                <th>内点比例</th>
+                <th>质量评级</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td>powerline_001_1</td>
+                <td>10</td>
+                <td>1.83</td>
+                <td>0.254</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_002_1</td>
+                <td>19</td>
+                <td>3.07</td>
+                <td>0.199</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_003_1</td>
+                <td>84</td>
+                <td>10.35</td>
+                <td>0.567</td>
+                <td>0.80</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_004_1</td>
+                <td>28</td>
+                <td>7.44</td>
+                <td>0.363</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_005_1</td>
+                <td>52</td>
+                <td>11.26</td>
+                <td>0.601</td>
+                <td>0.85</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_006_1</td>
+                <td>26</td>
+                <td>4.51</td>
+                <td>0.445</td>
+                <td>0.96</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_007_1</td>
+                <td>13</td>
+                <td>2.60</td>
+                <td>0.319</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_008_1</td>
+                <td>16</td>
+                <td>3.07</td>
+                <td>0.209</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_009_1</td>
+                <td>8</td>
+                <td>2.85</td>
+                <td>0.142</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_010_1</td>
+                <td>21</td>
+                <td>4.92</td>
+                <td>0.322</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_011_1</td>
+                <td>14</td>
+                <td>3.89</td>
+                <td>0.487</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_012_1</td>
+                <td>24</td>
+                <td>9.03</td>
+                <td>0.373</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_013_1</td>
+                <td>9</td>
+                <td>1.60</td>
+                <td>0.185</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_014_1</td>
+                <td>75</td>
+                <td>12.51</td>
+                <td>0.629</td>
+                <td>0.79</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_015_1</td>
+                <td>51</td>
+                <td>7.03</td>
+                <td>0.537</td>
+                <td>0.86</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_016_1</td>
+                <td>14</td>
+                <td>2.60</td>
+                <td>0.284</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_017_1</td>
+                <td>8</td>
+                <td>3.29</td>
+                <td>0.108</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_018_1</td>
+                <td>21</td>
+                <td>1.78</td>
+                <td>0.265</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_019_1</td>
+                <td>344</td>
+                <td>46.70</td>
+                <td>0.140</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_019_2</td>
+                <td>383</td>
+                <td>50.80</td>
+                <td>0.173</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_019_3</td>
+                <td>405</td>
+                <td>55.62</td>
+                <td>0.203</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_020_1</td>
+                <td>214</td>
+                <td>42.86</td>
+                <td>0.086</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_020_2</td>
+                <td>276</td>
+                <td>46.86</td>
+                <td>0.090</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_020_3</td>
+                <td>276</td>
+                <td>51.33</td>
+                <td>0.094</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_021_1</td>
+                <td>10</td>
+                <td>3.47</td>
+                <td>0.454</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_022_1</td>
+                <td>26</td>
+                <td>3.44</td>
+                <td>0.370</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_023_1</td>
+                <td>96</td>
+                <td>12.69</td>
+                <td>0.720</td>
+                <td>0.66</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_024_1</td>
+                <td>10</td>
+                <td>3.10</td>
+                <td>0.349</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_025_1</td>
+                <td>24</td>
+                <td>3.55</td>
+                <td>0.343</td>
+                <td>0.96</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_026_1</td>
+                <td>250</td>
+                <td>43.62</td>
+                <td>0.134</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_026_2</td>
+                <td>376</td>
+                <td>47.56</td>
+                <td>0.193</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_026_3</td>
+                <td>430</td>
+                <td>52.16</td>
+                <td>0.233</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_027_1</td>
+                <td>193</td>
+                <td>40.73</td>
+                <td>0.086</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_027_2</td>
+                <td>274</td>
+                <td>44.45</td>
+                <td>0.091</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_027_3</td>
+                <td>284</td>
+                <td>48.87</td>
+                <td>0.093</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_028_1</td>
+                <td>325</td>
+                <td>44.37</td>
+                <td>0.142</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_028_2</td>
+                <td>363</td>
+                <td>48.80</td>
+                <td>0.164</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_028_3</td>
+                <td>410</td>
+                <td>53.09</td>
+                <td>0.194</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_029_1</td>
+                <td>9</td>
+                <td>2.29</td>
+                <td>0.101</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_030_1</td>
+                <td>56</td>
+                <td>8.19</td>
+                <td>0.395</td>
+                <td>0.95</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_031_1</td>
+                <td>17</td>
+                <td>4.85</td>
+                <td>0.348</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_032_1</td>
+                <td>52</td>
+                <td>8.92</td>
+                <td>0.558</td>
+                <td>0.83</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_033_1</td>
+                <td>11</td>
+                <td>2.01</td>
+                <td>0.232</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_034_1</td>
+                <td>60</td>
+                <td>5.43</td>
+                <td>0.568</td>
+                <td>0.83</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_035_1</td>
+                <td>15</td>
+                <td>3.00</td>
+                <td>0.456</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_036_1</td>
+                <td>24</td>
+                <td>2.63</td>
+                <td>0.248</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_037_1</td>
+                <td>20</td>
+                <td>2.51</td>
+                <td>0.276</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_038_1</td>
+                <td>23</td>
+                <td>3.13</td>
+                <td>0.229</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_039_1</td>
+                <td>13</td>
+                <td>2.59</td>
+                <td>0.324</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_040_1</td>
+                <td>34</td>
+                <td>5.93</td>
+                <td>0.654</td>
+                <td>0.85</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_041_1</td>
+                <td>23</td>
+                <td>3.24</td>
+                <td>0.348</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_042_1</td>
+                <td>19</td>
+                <td>3.21</td>
+                <td>0.327</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_043_1</td>
+                <td>9</td>
+                <td>2.32</td>
+                <td>0.356</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_044_1</td>
+                <td>22</td>
+                <td>4.23</td>
+                <td>0.652</td>
+                <td>0.82</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_045_1</td>
+                <td>21</td>
+                <td>3.82</td>
+                <td>0.320</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_046_1</td>
+                <td>25</td>
+                <td>3.52</td>
+                <td>0.467</td>
+                <td>0.92</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_047_1</td>
+                <td>58</td>
+                <td>11.73</td>
+                <td>0.703</td>
+                <td>0.67</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_048_1</td>
+                <td>23</td>
+                <td>5.12</td>
+                <td>0.515</td>
+                <td>0.87</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_049_1</td>
+                <td>51</td>
+                <td>4.94</td>
+                <td>0.754</td>
+                <td>0.82</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_050_1</td>
+                <td>22</td>
+                <td>5.14</td>
+                <td>0.384</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_051_1</td>
+                <td>18</td>
+                <td>1.75</td>
+                <td>0.284</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_052_1</td>
+                <td>524</td>
+                <td>58.25</td>
+                <td>0.129</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_052_2</td>
+                <td>552</td>
+                <td>63.90</td>
+                <td>0.124</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_052_3</td>
+                <td>565</td>
+                <td>69.92</td>
+                <td>0.129</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_053_1</td>
+                <td>63</td>
+                <td>24.27</td>
+                <td>0.020</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_054_1</td>
+                <td>97</td>
+                <td>12.25</td>
+                <td>0.618</td>
+                <td>0.76</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_055_1</td>
+                <td>11</td>
+                <td>1.98</td>
+                <td>0.136</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_056_1</td>
+                <td>11</td>
+                <td>1.16</td>
+                <td>0.067</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_057_1</td>
+                <td>29</td>
+                <td>8.98</td>
+                <td>0.330</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_058_1</td>
+                <td>33</td>
+                <td>10.73</td>
+                <td>0.405</td>
+                <td>0.94</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_059_1</td>
+                <td>50</td>
+                <td>12.85</td>
+                <td>0.017</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_060_1</td>
+                <td>38</td>
+                <td>11.68</td>
+                <td>0.017</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_061_1</td>
+                <td>113</td>
+                <td>52.84</td>
+                <td>0.059</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_061_2</td>
+                <td>177</td>
+                <td>58.48</td>
+                <td>0.073</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_061_3</td>
+                <td>155</td>
+                <td>63.95</td>
+                <td>0.059</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_062_1</td>
+                <td>528</td>
+                <td>57.99</td>
+                <td>0.125</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_062_2</td>
+                <td>539</td>
+                <td>63.97</td>
+                <td>0.122</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_062_3</td>
+                <td>557</td>
+                <td>69.70</td>
+                <td>0.131</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_063_1</td>
+                <td>8</td>
+                <td>1.19</td>
+                <td>0.085</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_064_1</td>
+                <td>11</td>
+                <td>2.68</td>
+                <td>0.310</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_065_1</td>
+                <td>11</td>
+                <td>2.73</td>
+                <td>0.228</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_066_1</td>
+                <td>9</td>
+                <td>2.24</td>
+                <td>0.082</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_067_1</td>
+                <td>34</td>
+                <td>3.47</td>
+                <td>0.272</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_068_1</td>
+                <td>73</td>
+                <td>22.39</td>
+                <td>0.018</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_069_1</td>
+                <td>157</td>
+                <td>50.91</td>
+                <td>0.029</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_070_1</td>
+                <td>48</td>
+                <td>5.97</td>
+                <td>0.367</td>
+                <td>0.98</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_071_1</td>
+                <td>17</td>
+                <td>2.87</td>
+                <td>0.355</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_072_1</td>
+                <td>8</td>
+                <td>1.44</td>
+                <td>0.094</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_073_1</td>
+                <td>10</td>
+                <td>2.53</td>
+                <td>0.209</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_074_1</td>
+                <td>9</td>
+                <td>1.44</td>
+                <td>0.140</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_075_1</td>
+                <td>39</td>
+                <td>8.09</td>
+                <td>0.381</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_076_1</td>
+                <td>163</td>
+                <td>52.81</td>
+                <td>0.030</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_077_1</td>
+                <td>46</td>
+                <td>6.24</td>
+                <td>0.468</td>
+                <td>0.89</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_078_1</td>
+                <td>24</td>
+                <td>3.55</td>
+                <td>0.393</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_079_1</td>
+                <td>85</td>
+                <td>9.65</td>
+                <td>0.574</td>
+                <td>0.88</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_080_1</td>
+                <td>148</td>
+                <td>42.24</td>
+                <td>0.025</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_081_1</td>
+                <td>34</td>
+                <td>3.11</td>
+                <td>0.376</td>
+                <td>0.97</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_082_1</td>
+                <td>16</td>
+                <td>2.79</td>
+                <td>0.348</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_083_1</td>
+                <td>38</td>
+                <td>3.74</td>
+                <td>0.426</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_084_1</td>
+                <td>117</td>
+                <td>8.17</td>
+                <td>0.769</td>
+                <td>0.61</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_085_1</td>
+                <td>13</td>
+                <td>1.71</td>
+                <td>0.147</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_086_1</td>
+                <td>22</td>
+                <td>5.01</td>
+                <td>0.242</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_087_1</td>
+                <td>11</td>
+                <td>2.43</td>
+                <td>0.339</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_088_1</td>
+                <td>17</td>
+                <td>3.93</td>
+                <td>0.141</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_089_1</td>
+                <td>22</td>
+                <td>6.96</td>
+                <td>0.578</td>
+                <td>0.95</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_090_1</td>
+                <td>12</td>
+                <td>2.49</td>
+                <td>0.202</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_091_1</td>
+                <td>37</td>
+                <td>4.72</td>
+                <td>0.604</td>
+                <td>0.73</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_092_1</td>
+                <td>148</td>
+                <td>15.71</td>
+                <td>0.730</td>
+                <td>0.63</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_093_1</td>
+                <td>21</td>
+                <td>7.29</td>
+                <td>0.013</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_094_1</td>
+                <td>13</td>
+                <td>3.83</td>
+                <td>0.016</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_095_1</td>
+                <td>25</td>
+                <td>7.82</td>
+                <td>0.015</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_096_1</td>
+                <td>38</td>
+                <td>7.23</td>
+                <td>0.527</td>
+                <td>0.92</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_097_1</td>
+                <td>17</td>
+                <td>2.81</td>
+                <td>0.421</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_098_1</td>
+                <td>45</td>
+                <td>5.74</td>
+                <td>0.440</td>
+                <td>0.98</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_099_1</td>
+                <td>59</td>
+                <td>8.20</td>
+                <td>0.547</td>
+                <td>0.83</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_100_1</td>
+                <td>16</td>
+                <td>3.40</td>
+                <td>0.218</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_101_1</td>
+                <td>12</td>
+                <td>3.74</td>
+                <td>0.015</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_102_1</td>
+                <td>14</td>
+                <td>1.48</td>
+                <td>0.165</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_103_1</td>
+                <td>12</td>
+                <td>1.28</td>
+                <td>0.127</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_104_1</td>
+                <td>25</td>
+                <td>4.59</td>
+                <td>0.534</td>
+                <td>0.88</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_105_1</td>
+                <td>12</td>
+                <td>1.95</td>
+                <td>0.215</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_106_1</td>
+                <td>31</td>
+                <td>9.05</td>
+                <td>0.400</td>
+                <td>0.97</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_107_1</td>
+                <td>27</td>
+                <td>1.85</td>
+                <td>0.278</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_108_1</td>
+                <td>18</td>
+                <td>2.86</td>
+                <td>0.316</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_109_1</td>
+                <td>25</td>
+                <td>11.17</td>
+                <td>0.522</td>
+                <td>0.92</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_110_1</td>
+                <td>342</td>
+                <td>57.63</td>
+                <td>0.203</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_110_2</td>
+                <td>455</td>
+                <td>64.36</td>
+                <td>0.227</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_110_3</td>
+                <td>550</td>
+                <td>70.00</td>
+                <td>0.234</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_110_4</td>
+                <td>709</td>
+                <td>76.02</td>
+                <td>0.218</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_111_1</td>
+                <td>115</td>
+                <td>13.99</td>
+                <td>0.181</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_112_1</td>
+                <td>17</td>
+                <td>3.24</td>
+                <td>0.266</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_113_1</td>
+                <td>16</td>
+                <td>3.45</td>
+                <td>0.387</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_114_1</td>
+                <td>30</td>
+                <td>5.94</td>
+                <td>0.570</td>
+                <td>0.87</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_115_1</td>
+                <td>20</td>
+                <td>3.85</td>
+                <td>0.441</td>
+                <td>0.95</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_116_1</td>
+                <td>131</td>
+                <td>49.26</td>
+                <td>0.141</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_116_2</td>
+                <td>245</td>
+                <td>53.94</td>
+                <td>0.187</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_116_3</td>
+                <td>381</td>
+                <td>59.12</td>
+                <td>0.213</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_116_4</td>
+                <td>523</td>
+                <td>64.13</td>
+                <td>0.216</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_116_5</td>
+                <td>675</td>
+                <td>69.35</td>
+                <td>0.202</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_117_1</td>
+                <td>31</td>
+                <td>6.81</td>
+                <td>0.174</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_118_1</td>
+                <td>58</td>
+                <td>9.93</td>
+                <td>0.599</td>
+                <td>0.78</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_119_1</td>
+                <td>62</td>
+                <td>9.83</td>
+                <td>0.294</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_120_1</td>
+                <td>16</td>
+                <td>5.48</td>
+                <td>0.017</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_121_1</td>
+                <td>115</td>
+                <td>46.05</td>
+                <td>0.032</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_121_2</td>
+                <td>130</td>
+                <td>50.75</td>
+                <td>0.036</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_122_1</td>
+                <td>9</td>
+                <td>2.62</td>
+                <td>0.012</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_123_1</td>
+                <td>31</td>
+                <td>5.72</td>
+                <td>0.256</td>
+                <td>0.97</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_124_1</td>
+                <td>12</td>
+                <td>1.61</td>
+                <td>0.213</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_125_1</td>
+                <td>28</td>
+                <td>4.72</td>
+                <td>0.410</td>
+                <td>0.96</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_126_1</td>
+                <td>47</td>
+                <td>7.04</td>
+                <td>0.436</td>
+                <td>0.91</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_127_1</td>
+                <td>9</td>
+                <td>1.21</td>
+                <td>0.134</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_128_1</td>
+                <td>64</td>
+                <td>12.41</td>
+                <td>0.512</td>
+                <td>0.89</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_129_1</td>
+                <td>24</td>
+                <td>4.83</td>
+                <td>0.505</td>
+                <td>0.83</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_130_1</td>
+                <td>148</td>
+                <td>47.54</td>
+                <td>0.138</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_130_2</td>
+                <td>156</td>
+                <td>52.36</td>
+                <td>0.105</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_130_3</td>
+                <td>185</td>
+                <td>56.81</td>
+                <td>0.121</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_130_4</td>
+                <td>170</td>
+                <td>62.30</td>
+                <td>0.045</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_131_1</td>
+                <td>11</td>
+                <td>2.81</td>
+                <td>0.196</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_132_1</td>
+                <td>9</td>
+                <td>2.53</td>
+                <td>0.242</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_133_1</td>
+                <td>40</td>
+                <td>6.66</td>
+                <td>0.380</td>
+                <td>0.95</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_134_1</td>
+                <td>10</td>
+                <td>0.88</td>
+                <td>0.058</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_135_1</td>
+                <td>14</td>
+                <td>2.49</td>
+                <td>0.276</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_136_1</td>
+                <td>34</td>
+                <td>8.91</td>
+                <td>0.549</td>
+                <td>0.97</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_137_1</td>
+                <td>49</td>
+                <td>7.05</td>
+                <td>0.458</td>
+                <td>0.96</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_138_1</td>
+                <td>30</td>
+                <td>5.38</td>
+                <td>0.518</td>
+                <td>0.97</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_139_1</td>
+                <td>52</td>
+                <td>8.06</td>
+                <td>0.481</td>
+                <td>0.98</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_140_1</td>
+                <td>125</td>
+                <td>15.53</td>
+                <td>0.510</td>
+                <td>0.84</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_141_1</td>
+                <td>16</td>
+                <td>2.40</td>
+                <td>0.286</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_142_1</td>
+                <td>38</td>
+                <td>5.73</td>
+                <td>0.486</td>
+                <td>0.84</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_143_1</td>
+                <td>9</td>
+                <td>2.17</td>
+                <td>0.180</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_144_1</td>
+                <td>31</td>
+                <td>6.79</td>
+                <td>0.348</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_145_1</td>
+                <td>18</td>
+                <td>2.43</td>
+                <td>0.266</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_146_1</td>
+                <td>19</td>
+                <td>4.63</td>
+                <td>0.382</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_147_1</td>
+                <td>24</td>
+                <td>5.10</td>
+                <td>0.448</td>
+                <td>0.96</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_148_1</td>
+                <td>17</td>
+                <td>2.90</td>
+                <td>0.409</td>
+                <td>0.94</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_149_1</td>
+                <td>41</td>
+                <td>6.77</td>
+                <td>0.413</td>
+                <td>0.98</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_150_1</td>
+                <td>84</td>
+                <td>8.70</td>
+                <td>0.551</td>
+                <td>0.81</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_151_1</td>
+                <td>24</td>
+                <td>6.42</td>
+                <td>0.477</td>
+                <td>0.88</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_152_1</td>
+                <td>77</td>
+                <td>13.33</td>
+                <td>0.170</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_153_1</td>
+                <td>33</td>
+                <td>13.95</td>
+                <td>0.024</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_154_1</td>
+                <td>55</td>
+                <td>17.48</td>
+                <td>0.134</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_155_1</td>
+                <td>16</td>
+                <td>3.14</td>
+                <td>0.478</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_156_1</td>
+                <td>8</td>
+                <td>3.92</td>
+                <td>0.383</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_157_1</td>
+                <td>29</td>
+                <td>6.24</td>
+                <td>0.425</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_158_1</td>
+                <td>13</td>
+                <td>2.69</td>
+                <td>0.391</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_159_1</td>
+                <td>17</td>
+                <td>98.20</td>
+                <td>0.236</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_160_1</td>
+                <td>421</td>
+                <td>54.73</td>
+                <td>0.201</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_160_2</td>
+                <td>462</td>
+                <td>60.09</td>
+                <td>0.220</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_160_3</td>
+                <td>456</td>
+                <td>65.32</td>
+                <td>0.229</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_160_4</td>
+                <td>470</td>
+                <td>70.69</td>
+                <td>0.235</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_160_5</td>
+                <td>560</td>
+                <td>76.30</td>
+                <td>0.232</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_160_6</td>
+                <td>585</td>
+                <td>81.93</td>
+                <td>0.227</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_161_1</td>
+                <td>292</td>
+                <td>55.23</td>
+                <td>0.091</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_161_2</td>
+                <td>314</td>
+                <td>60.45</td>
+                <td>0.095</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_161_3</td>
+                <td>281</td>
+                <td>65.87</td>
+                <td>0.094</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_161_4</td>
+                <td>260</td>
+                <td>70.65</td>
+                <td>0.098</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_161_5</td>
+                <td>367</td>
+                <td>77.25</td>
+                <td>0.108</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_161_6</td>
+                <td>429</td>
+                <td>82.49</td>
+                <td>0.119</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_162_1</td>
+                <td>458</td>
+                <td>57.12</td>
+                <td>0.230</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_162_2</td>
+                <td>511</td>
+                <td>62.37</td>
+                <td>0.262</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_162_3</td>
+                <td>494</td>
+                <td>68.26</td>
+                <td>0.272</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_162_4</td>
+                <td>556</td>
+                <td>73.99</td>
+                <td>0.285</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_162_5</td>
+                <td>652</td>
+                <td>79.79</td>
+                <td>0.273</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_162_6</td>
+                <td>678</td>
+                <td>85.61</td>
+                <td>0.260</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_163_1</td>
+                <td>317</td>
+                <td>58.25</td>
+                <td>0.091</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_163_2</td>
+                <td>326</td>
+                <td>63.52</td>
+                <td>0.097</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_163_3</td>
+                <td>311</td>
+                <td>69.57</td>
+                <td>0.096</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_163_4</td>
+                <td>305</td>
+                <td>75.55</td>
+                <td>0.092</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_163_5</td>
+                <td>394</td>
+                <td>81.01</td>
+                <td>0.112</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_163_6</td>
+                <td>461</td>
+                <td>87.34</td>
+                <td>0.124</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_164_1</td>
+                <td>478</td>
+                <td>58.39</td>
+                <td>0.193</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_164_2</td>
+                <td>509</td>
+                <td>64.16</td>
+                <td>0.211</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_164_3</td>
+                <td>479</td>
+                <td>69.76</td>
+                <td>0.218</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_164_4</td>
+                <td>525</td>
+                <td>75.37</td>
+                <td>0.221</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_164_5</td>
+                <td>575</td>
+                <td>81.59</td>
+                <td>0.221</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_164_6</td>
+                <td>627</td>
+                <td>87.53</td>
+                <td>0.223</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_165_1</td>
+                <td>32</td>
+                <td>9.13</td>
+                <td>0.375</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_166_1</td>
+                <td>15</td>
+                <td>2.16</td>
+                <td>0.373</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_167_1</td>
+                <td>15</td>
+                <td>3.01</td>
+                <td>0.302</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_168_1</td>
+                <td>66</td>
+                <td>13.49</td>
+                <td>0.436</td>
+                <td>0.88</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_169_1</td>
+                <td>38</td>
+                <td>6.52</td>
+                <td>0.544</td>
+                <td>0.89</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_170_1</td>
+                <td>24</td>
+                <td>5.28</td>
+                <td>0.384</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_171_1</td>
+                <td>45</td>
+                <td>6.27</td>
+                <td>0.465</td>
+                <td>0.98</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_172_1</td>
+                <td>17</td>
+                <td>1.57</td>
+                <td>0.175</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_173_1</td>
+                <td>28</td>
+                <td>5.94</td>
+                <td>0.567</td>
+                <td>0.93</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_174_1</td>
+                <td>32</td>
+                <td>9.04</td>
+                <td>0.401</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_175_1</td>
+                <td>35</td>
+                <td>6.24</td>
+                <td>0.515</td>
+                <td>0.86</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_176_1</td>
+                <td>12</td>
+                <td>2.00</td>
+                <td>0.306</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_177_1</td>
+                <td>10</td>
+                <td>2.65</td>
+                <td>0.383</td>
+                <td>0.90</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_178_1</td>
+                <td>11</td>
+                <td>1.47</td>
+                <td>0.279</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_179_1</td>
+                <td>22</td>
+                <td>4.60</td>
+                <td>0.635</td>
+                <td>0.86</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_180_1</td>
+                <td>12</td>
+                <td>1.70</td>
+                <td>0.248</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_181_1</td>
+                <td>20</td>
+                <td>4.26</td>
+                <td>0.625</td>
+                <td>0.95</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_182_1</td>
+                <td>10</td>
+                <td>1.82</td>
+                <td>0.262</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_183_1</td>
+                <td>11</td>
+                <td>2.57</td>
+                <td>0.311</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_184_1</td>
+                <td>17</td>
+                <td>5.28</td>
+                <td>0.308</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_185_1</td>
+                <td>12</td>
+                <td>1.21</td>
+                <td>0.210</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_186_1</td>
+                <td>9</td>
+                <td>1.56</td>
+                <td>0.103</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_187_1</td>
+                <td>16</td>
+                <td>4.53</td>
+                <td>0.331</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_188_1</td>
+                <td>31</td>
+                <td>6.28</td>
+                <td>0.373</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_189_1</td>
+                <td>24</td>
+                <td>5.53</td>
+                <td>0.283</td>
+                <td>0.96</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_190_1</td>
+                <td>226</td>
+                <td>21.34</td>
+                <td>2.521</td>
+                <td>0.10</td>
+                <td><span class="error">一般</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_191_1</td>
+                <td>8</td>
+                <td>4.08</td>
+                <td>0.171</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_192_1</td>
+                <td>11</td>
+                <td>5.12</td>
+                <td>0.370</td>
+                <td>1.00</td>
+                <td><span class="warning">良好</span></td>
+            </tr>
+
+            <tr>
+                <td>powerline_193_1</td>
+                <td>13</td>
+                <td>7.58</td>
+                <td>0.178</td>
+                <td>1.00</td>
+                <td><span class="good">优秀</span></td>
+            </tr>
+
+        </tbody>
+    </table>
+    
+    <h2>🔧 算法参数</h2>
+    <div class="summary">
+        <p><strong>分段长度:</strong> 60.0米</p>
+        <p><strong>重叠比例:</strong> 10%</p>
+        <p><strong>RANSAC阈值:</strong> 1.2米</p>
+        <p><strong>最小样本比例:</strong> 50%</p>
+        <p><strong>拟合类型:</strong> 线性拟合</p>
+    </div>
+    
+    <footer style="margin-top: 40px; text-align: center; color: #7f8c8d;">
+        <p>报告由RANSAC电力线重建系统自动生成</p>
+    </footer>
+</body>
+</html>

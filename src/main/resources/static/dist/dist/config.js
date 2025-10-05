@@ -1,0 +1,1 @@
+export const SERVER_SOCKET = `192.168.66.152:8080`;
