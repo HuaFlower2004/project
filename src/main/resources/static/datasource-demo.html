@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据库监控</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Consolas', 'Microsoft YaHei', monospace;
+            background: #f5f5f5;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #333;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: normal;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            background: white;
+            padding: 20px;
+            border-left: 3px solid #ddd;
+        }
+
+        .stat-box.master {
+            border-left-color: #e74c3c;
+        }
+
+        .stat-box.slave {
+            border-left-color: #27ae60;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #999;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 48px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .stat-info {
+            font-size: 13px;
+            color: #666;
+            margin-top: 10px;
+            line-height: 1.6;
+        }
+
+        .controls {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .controls h2 {
+            font-size: 16px;
+            font-weight: normal;
+            margin-bottom: 15px;
+            color: #666;
+        }
+
+        .btn-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background: #f9f9f9;
+            border-color: #999;
+        }
+
+        button:active {
+            background: #f0f0f0;
+        }
+
+        button.read {
+            border-left: 3px solid #27ae60;
+        }
+
+        button.write {
+            border-left: 3px solid #e74c3c;
+        }
+
+        .result {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .result h3 {
+            font-size: 14px;
+            font-weight: normal;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .result pre {
+            background: #f9f9f9;
+            padding: 15px;
+            overflow-x: auto;
+            font-size: 13px;
+            border: 1px solid #eee;
+            line-height: 1.6;
+        }
+
+        .logs {
+            background: white;
+            padding: 20px;
+        }
+
+        .logs h2 {
+            font-size: 16px;
+            font-weight: normal;
+            margin-bottom: 15px;
+            color: #666;
+        }
+
+        .log-content {
+            background: #fafafa;
+            border: 1px solid #eee;
+            padding: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-size: 13px;
+        }
+
+        .log-item {
+            padding: 5px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .log-item:last-child {
+            border-bottom: none;
+        }
+
+        .log-item.master {
+            color: #e74c3c;
+        }
+
+        .log-item.slave {
+            color: #27ae60;
+        }
+
+        .time {
+            color: #999;
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>数据库读写分离监控</h1>
+        <p>主库: 192.168.108.152:3306 | 从库: 192.168.108.151:3306</p>
+    </div>
+
+    <div class="stats">
+        <div class="stat-box master">
+            <div class="stat-label">主库 (写操作)</div>
+            <div class="stat-value" id="masterCount">0</div>
+            <div class="stat-info">INSERT / UPDATE / DELETE</div>
+        </div>
+
+        <div class="stat-box slave">
+            <div class="stat-label">从库 (读操作)</div>
+            <div class="stat-value" id="slaveCount">0</div>
+            <div class="stat-info">SELECT / COUNT / EXISTS</div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <h2>测试操作</h2>
+        <div class="btn-group">
+            <button class="read" onclick="demoLogin()">用户登录查询</button>
+            <button class="write" onclick="demoRegister()">用户注册</button>
+            <button class="read" onclick="demoList()">查询用户列表</button>
+            <button class="write" onclick="demoCompleteFlow()">完整流程测试</button>
+        </div>
+    </div>
+
+    <div class="result" id="result">
+        <h3>操作结果</h3>
+        <pre id="resultContent"></pre>
+    </div>
+
+    <div class="logs">
+        <h2>操作日志</h2>
+        <div class="log-content" id="logs">
+            <div class="log-item">等待操作...</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const API_BASE = '/api/monitor/datasource';
+
+    setInterval(updateStats, 2000);
+    updateStats();
+
+    async function updateStats() {
+        try {
+            const res = await fetch(`${API_BASE}/stats`);
+            const data = await res.json();
+            if (data.code === 200) {
+                document.getElementById('masterCount').textContent = data.data.masterRequests;
+                document.getElementById('slaveCount').textContent = data.data.slaveRequests;
+            }
+        } catch (e) {
+            console.error('统计更新失败:', e);
+        }
+    }
+
+    function addLog(msg, type) {
+        const logs = document.getElementById('logs');
+        const time = new Date().toLocaleTimeString();
+        const item = document.createElement('div');
+        item.className = `log-item ${type}`;
+        item.innerHTML = `<span class="time">${time}</span> ${msg}`;
+        logs.insertBefore(item, logs.firstChild);
+
+        while (logs.children.length > 20) {
+            logs.removeChild(logs.lastChild);
+        }
+    }
+
+    function showResult(data) {
+        const result = document.getElementById('result');
+        const content = document.getElementById('resultContent');
+        content.textContent = JSON.stringify(data, null, 2);
+        result.style.display = 'block';
+    }
+
+    async function demoLogin() {
+        addLog('执行: 用户登录查询', 'slave');
+        try {
+            const res = await fetch(`${API_BASE}/demo/login/testuser`);
+            const data = await res.json();
+            if (data.code === 200) {
+                showResult(data.data);
+                addLog('完成: 使用从库查询 192.168.108.151', 'slave');
+            }
+        } catch (e) {
+            addLog('错误: ' + e.message, 'slave');
+        }
+    }
+
+    async function demoRegister() {
+        addLog('执行: 用户注册', 'master');
+        const username = 'user_' + Date.now();
+        try {
+            const res = await fetch(`${API_BASE}/demo/register`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    userName: username,
+                    email: `${username}@test.com`,
+                    password: 'Test@123456',
+                    confirmPassword: 'Test@123456'
+                })
+            });
+            const data = await res.json();
+            if (data.code === 200) {
+                showResult(data.data);
+                addLog('完成: 使用主库写入 192.168.108.152', 'master');
+            } else {
+                addLog('失败: ' + data.message, 'master');
+            }
+        } catch (e) {
+            addLog('错误: ' + e.message, 'master');
+        }
+    }
+
+    async function demoList() {
+        addLog('执行: 查询用户列表', 'slave');
+        try {
+            const res = await fetch(`${API_BASE}/demo/list`);
+            const data = await res.json();
+            if (data.code === 200) {
+                showResult(data.data);
+                addLog('完成: 使用从库查询 192.168.108.151', 'slave');
+            }
+        } catch (e) {
+            addLog('错误: ' + e.message, 'slave');
+        }
+    }
+
+    async function demoCompleteFlow() {
+        addLog('执行: 完整业务流程测试', 'master');
+        try {
+            const res = await fetch(`${API_BASE}/demo/complete-flow`, {method: 'POST'});
+            const data = await res.json();
+            if (data.code === 200) {
+                showResult(data.data);
+                addLog('完成: ' + data.data.summary, 'master');
+
+                data.data.steps.forEach(step => {
+                    const type = step.datasource.includes('slave') ? 'slave' : 'master';
+                    addLog(step.step + ' -> ' + step.result, type);
+                });
+            }
+        } catch (e) {
+            addLog('错误: ' + e.message, 'master');
+        }
+    }
+</script>
+</body>
+</html>

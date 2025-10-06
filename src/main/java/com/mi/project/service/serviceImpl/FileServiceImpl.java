@@ -1,6 +1,8 @@
 package com.mi.project.service.serviceImpl;
 
 import com.mi.project.common.FileStatus;
+import com.mi.project.config.datasource.Master;
+import com.mi.project.config.datasource.ReadOnly;
 import com.mi.project.dto.fileDTO.FileUploadDTO;
 import com.mi.project.entity.File;
 import com.mi.project.entity.User;
@@ -13,7 +15,6 @@ import jakarta.annotation.Resource;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,6 +46,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements IF
 
     @Override
     @Transactional
+    @Master
     public File uploadFile(FileUploadDTO uploadDTO, User user) {
         try {
 
@@ -192,11 +194,13 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements IF
         }
     }
 
+    @ReadOnly
     @Override
     public List<File> getUserFiles(String userName) {
         return fileRepository.findByUserNameOrderByUploadTimeDesc(userName);
     }
 
+    @ReadOnly
     @Override
     public File getFileById(Long fileId, String userName) {
         File file = fileRepository.findById(fileId)
@@ -213,6 +217,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements IF
         return file;
     }
 
+    @Master
     @Override
     @Transactional
     public void deleteFile(Long fileId, String userName) {
@@ -231,18 +236,5 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements IF
         fileRepository.delete(file);
 
         log.info("文件删除成功: {} (ID: {})", file.getFileName(), fileId);
-    }
-
-    private String getFileExtension(String filename) {
-        if (filename == null || filename.isEmpty()) {
-            return "";
-        }
-
-        int lastDotIndex = filename.lastIndexOf('.');
-        if (lastDotIndex == -1) {
-            return "";
-        }
-
-        return filename.substring(lastDotIndex);
     }
 }

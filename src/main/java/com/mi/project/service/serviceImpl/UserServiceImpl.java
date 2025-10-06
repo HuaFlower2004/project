@@ -1,5 +1,7 @@
 package com.mi.project.service.serviceImpl;
 
+import com.mi.project.config.datasource.Master;
+import com.mi.project.config.datasource.ReadOnly;
 import com.mi.project.dto.userDTO.UserRegisterDTO;
 import com.mi.project.dto.userDTO.UserUpdateDTO;
 import com.mi.project.entity.User;
@@ -11,6 +13,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,6 +40,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     @Transactional
+    @Master
     public User register(UserRegisterDTO userRegisterDTO){
 
         if(userRepository.existsByUserName(userRegisterDTO.getUserName())){
@@ -61,17 +65,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         return userRepository.save(user);
     }
 
+    @ReadOnly
     @Override
     public boolean isUsereNameAvailable(String userName) {
         return !userRepository.existsByUserName(userName);
     }
 
+    @ReadOnly
     @Override
     public boolean isUserEmailAvailable(String email) {
         return !userRepository.existsByEmail(email);
     }
 
-
+    @ReadOnly
     @Override
     public User findUserByAccount(String account) {
         // 支持用户名或邮箱查找
@@ -86,6 +92,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
     }
 
+    @ReadOnly
     @Override
     @Transactional
     public User updateUserInfo(String userName, UserUpdateDTO updateDTO) {
@@ -141,6 +148,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         return userRepository.save(user);
     }
 
+    @Master
     @Override
     @Transactional
     public boolean deleteUser(String userName) {
