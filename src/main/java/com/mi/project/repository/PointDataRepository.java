@@ -8,6 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * @author 31591
+ */
 @Repository
 public interface PointDataRepository extends JpaRepository<PointData, Long> {
 

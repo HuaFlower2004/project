@@ -9,34 +9,50 @@ spring:
       # 严格匹配数据源,默认false. true未匹配到指定数据源时抛异常,false使用默认数据源
       strict: false
       datasource:
-        # 主数据源(写) - 你的电脑
-        master:
-          driver-class-name: com.mysql.cj.jdbc.Driver
-          url: jdbc:mysql://192.168.108.152:3306/project?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
-          username: root
-          password: mijiajie20040820  # 改成你的主库密码
-          type: com.zaxxer.hikari.HikariDataSource
-          hikari:
-            minimum-idle: 5
-            maximum-pool-size: 20
-            connection-timeout: 30000
-            idle-timeout: 600000
-            max-lifetime: 1800000
-            pool-name: Master-Pool  # 连接池名称，方便日志追踪
+         # 主数据源(写) - 主库
+         master:
+           driver-class-name: com.mysql.cj.jdbc.Driver
+           url: jdbc:mysql://localhost:3306/project?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+           username: root
+           password: mijiajie20040820  # 改成你的主库密码
+           type: com.zaxxer.hikari.HikariDataSource
+           hikari:
+             minimum-idle: 5
+             maximum-pool-size: 20
+             connection-timeout: 30000
+             idle-timeout: 600000
+             max-lifetime: 1800000
+        # 从数据源(读) - 从库1
+#        slave1:
+#          driver-class-name: com.mysql.cj.jdbc.Driver
+#          url: jdbc:mysql://192.168.108.153:3306/project?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+#          username: root
+#          password: mijiajie20040820  # 改成你的从库密码
+#          type: com.zaxxer.hikari.HikariDataSource
+#          hikari:
+#            minimum-idle: 3
+#            maximum-pool-size: 15
+#            connection-timeout: 30000
+#            idle-timeout: 600000
+#            max-lifetime: 1800000
+#
+#
+#        # 从数据源(读) - 从库2 (可选，用于负载均衡)
+#        slave2:
+#          driver-class-name: com.mysql.cj.jdbc.Driver
+#          url: jdbc:mysql://192.168.108.154:3306/project?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+#          username: root
+#          password: mijiajie20040820  # 改成你的从库密码
+#          type: com.zaxxer.hikari.HikariDataSource
+#          hikari:
+#            minimum-idle: 3
+#            maximum-pool-size: 15
+#            connection-timeout: 30000
+#            idle-timeout: 600000
+#            max-lifetime: 1800000
 
-        # 从数据源1(读) - 另一台电脑
-        slave1:
-          driver-class-name: com.mysql.cj.jdbc.Driver
-          url: jdbc:mysql://192.168.108.151:3306/project?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
-          username: root
-          password: 123456  # 改成从库的MySQL密码
-          type: com.zaxxer.hikari.HikariDataSource
-          hikari:
-            minimum-idle: 3
-            maximum-pool-size: 15
-            connection-timeout: 30000
-            read-only: true  # 设置为只读
-            pool-name: Slave1-Pool  # 连接池名称
+
+
 
 # 日志配置 - 用于追踪数据源切换
 logging:

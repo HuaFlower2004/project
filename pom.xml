@@ -92,6 +92,12 @@
 			<artifactId>mybatis-plus-spring-boot3-starter</artifactId>
 			<version>3.5.12</version>
 		</dependency>
+		<!-- 动态数据源依赖 -->
+		<dependency>
+			<groupId>com.baomidou</groupId>
+			<artifactId>dynamic-datasource-spring-boot3-starter</artifactId>
+			<version>4.3.1</version>
+		</dependency>
 		<dependency>
 			<groupId>com.baomidou</groupId>
 			<artifactId>mybatis-plus-jsqlparser</artifactId>
@@ -118,6 +124,10 @@
 		<dependency>
 			<groupId>org.springframework.session</groupId>
 			<artifactId>spring-session-data-redis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-pool2</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -201,6 +211,23 @@
 			<groupId>jakarta.websocket</groupId>
 			<artifactId>jakarta.websocket-api</artifactId>
 			<version>2.0.0</version> <!-- Replace with the appropriate version -->
+		</dependency>
+
+		<!-- Apache POI for Excel processing -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>5.2.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>5.2.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-scratchpad</artifactId>
+			<version>5.2.4</version>
 		</dependency>
 
 	</dependencies>

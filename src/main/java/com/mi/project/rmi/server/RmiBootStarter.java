@@ -1,7 +1,10 @@
 package com.mi.project.rmi.server;
 
 import com.mi.project.rmi.api.HelloService;
+import com.mi.project.rmi.api.PowerLineAnalysisService;
 import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 
 import java.rmi.Remote;
@@ -10,33 +13,48 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
+/**
+ * RMI服务启动器
+ * 注册多个远程服务
+ */
+@Slf4j
 @Configuration
+@RequiredArgsConstructor
 public class RmiBootStarter {
-    private final HelloService helloService; // 这是实现类的 Spring Bean
-
-    public RmiBootStarter(HelloService helloService) {
-        this.helloService = helloService;
-    }
+    
+    private final HelloService helloService;
+    private final PowerLineAnalysisService powerLineAnalysisService;
 
     @PostConstruct
     public void start() throws Exception {
-        // 告诉 RMI “回连地址”，改成你的内网 IP
+        // 告诉 RMI "回连地址"，改成你的内网 IP
         System.setProperty("java.rmi.server.hostname", "192.168.181.152");
-
-        // 固定导出端口，避免随机端口被防火墙挡住
-        int objectPort = 20001;
-        Remote stub = UnicastRemoteObject.exportObject((Remote) helloService, objectPort);
 
         // 启动或获取注册中心（已启动则不会报错）
         Registry registry;
         try {
             registry = LocateRegistry.createRegistry(1099);
+            log.info("RMI注册中心启动成功，端口: 1099");
         } catch (RemoteException e) {
             registry = LocateRegistry.getRegistry(1099);
+            log.info("连接到现有RMI注册中心，端口: 1099");
         }
 
-        // 用“简名”绑定，不要写 rmi://.../HelloService
-        registry.rebind("HelloService", stub);
-        System.out.println("✅ RMI service bound as 'HelloService' on 1099, objPort=" + objectPort);
+        // 注册HelloService
+        int helloPort = 20001;
+        Remote helloStub = UnicastRemoteObject.exportObject((Remote) helloService, helloPort);
+        registry.rebind("HelloService", helloStub);
+        log.info("✅ HelloService 已注册，端口: {}", helloPort);
+
+        // 注册PowerLineAnalysisService
+        int analysisPort = 20002;
+        Remote analysisStub = UnicastRemoteObject.exportObject((Remote) powerLineAnalysisService, analysisPort);
+        registry.rebind("PowerLineAnalysisService", analysisStub);
+        log.info("✅ PowerLineAnalysisService 已注册，端口: {}", analysisPort);
+
+        log.info("🎉 所有RMI服务启动完成！");
+        log.info("服务列表:");
+        log.info("  - HelloService: rmi://192.168.181.152:1099/HelloService");
+        log.info("  - PowerLineAnalysisService: rmi://192.168.181.152:1099/PowerLineAnalysisService");
     }
 }

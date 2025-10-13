@@ -1,7 +1,15 @@
+# 主配置文件
+# 文件路径: src/main/resources/application.yml
+
 spring:
   application:
     name: project
 
+  # 激活其他配置文件
+  profiles:
+    active: datasource,redis
+
+  # 邮件配置
   mail:
     host: smtp.qq.com
     port: 465
@@ -12,6 +20,8 @@ spring:
         smtp:
           ssl:
             enable: true
+
+  # 线程池配置
   task:
     execution:
       pool:
@@ -19,31 +29,22 @@ spring:
         max-size: 10
         queue-capacity: 25
 
+  # 文件上传配置
   servlet:
     multipart:
       max-file-size: 1024MB
       max-request-size: 1024MB
 
-  #数据库
-  datasource:
-    url: jdbc:mysql://localhost:3306/project?serverTimeZone=UTC&characterEncoding=utf8&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true
-    username: root
-    password: mijiajie20040820
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    hikari:
-      maximum-pool-size: 20
-      minimum-idle: 5
-      idle-timeout: 300000
-      connection-timeout: 20000
-      max-lifetime: 1200000
-  #安全认证
+  # ⚠️ 注意：数据源配置已移到 application-datasource.yml
+  # 这里不再配置 spring.datasource，避免与动态数据源冲突
+
+  # 安全认证（基础配置，实际使用JWT）
   security:
     user:
       name: user
       password: 123456
 
-
-  #MQ配置
+  # RabbitMQ配置
   rabbitmq:
     host: localhost
     port: 5672
@@ -65,19 +66,15 @@ spring:
         concurrency: 1
         max-concurrency: 1
     virtual-host: "/"
-  #redis配置
-  data:
-    redis:
-      host: localhost
-      port: 6379
 
-  #JPA配置
+  # JPA配置
   jpa:
     hibernate:
       ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     database-platform: org.hibernate.dialect.MySQL8Dialect
+    show-sql: false  # 生产环境建议关闭SQL打印
     properties:
       hibernate:
         format_sql: true
@@ -88,9 +85,9 @@ spring:
           fetch_size: 1000
         order_inserts: true
         order_updates: true
-        generate_statistics: true
+        generate_statistics: false  # 生产环境建议关闭
 
-#解决中文乱码
+# 服务器配置
 server:
   servlet:
     encoding:
@@ -101,12 +98,8 @@ server:
       force-response: true
   address: 0.0.0.0
   port: 9090
-pagehelper:
-  helper-dialect: mysql
-  reasonable: true
-  support-methods-arguments: true
-  params: count=countSql
 
+# Swagger/Knife4j配置
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
@@ -124,41 +117,40 @@ knife4j:
   setting:
     language: zh_cn
 
+# 统一的日志配置（合并了三个文件的日志配置）
 logging:
   level:
-    org:
-      hibernate:
-        com.mi.project.config.datasource: DEBUG
-#        SQL:
-#          DEBUG
-        tool:
-          hbm2ddl:
-            DEBUG
+    # 项目日志
     com.mi.project: DEBUG
-    org.springframework.amqp: INFO
-    org.hibernate: WARN
+    com.mi.project.config.datasource: DEBUG  # 数据源切换日志
+    com.mi.project.cache: DEBUG              # 缓存日志
+    
+    # Spring框架日志
+    org.springframework.cache: DEBUG         # Spring缓存日志
+    org.springframework.data.redis: DEBUG    # Redis日志
+    org.springframework.jdbc: DEBUG          # JDBC日志
+    org.springframework.amqp: INFO           # RabbitMQ日志
+    
+    # 数据库相关日志
+    com.zaxxer.hikari: DEBUG                 # 连接池日志
+    org.hibernate: WARN                      # Hibernate日志（过多，设为WARN）
+    org.hibernate.SQL: DEBUG                 # SQL语句（可选）
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE  # SQL参数（可选）
+
+  # 日志格式
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  
+  # 日志文件
   file:
     name: logs/point-data-processor.log
+  logback:
+    rolling policy:
+      max-history: 30
+      max-file-size: 100MB
 
-#MyBatis配置
-mybatis:
-  mapper-locations: classpath:mapper/*.xml
-  type-aliases-package: com.mi.project.entity
-  configuration:
-    map-underscore-to-camel-case: true
-    cache-enabled: true
-    lazy-loading-enabled: true
-    multiple-result-sets-enabled: true
-    use-column-label: true
-    use-generated-keys: true
-    auto-mapping-behavior: partial
-    default-statement-timeout: 30
-    default-fetch-size: 100
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-
+# 监控端点配置
 management:
   endpoints:
     web:
@@ -171,12 +163,3 @@ management:
     metrics:
       export:
         enabled: true
-
-powerline:
-  thread:
-    pool:
-      size: 8  # 可根据服务器配置调整
-  region:
-    size: 50  # 区域大小
-  overlap:
-    ratio: 0.1  # 重叠比例

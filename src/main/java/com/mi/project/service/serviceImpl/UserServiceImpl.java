@@ -67,18 +67,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @ReadOnly
     @Override
+    @com.mi.project.annotation.Cacheable(key = "'user:available:' + #userName", ttl = 300, dataType = "user")
     public boolean isUsereNameAvailable(String userName) {
         return !userRepository.existsByUserName(userName);
     }
 
     @ReadOnly
     @Override
+    @com.mi.project.annotation.Cacheable(key = "'email:available:' + #email", ttl = 300, dataType = "user")
     public boolean isUserEmailAvailable(String email) {
         return !userRepository.existsByEmail(email);
     }
 
     @ReadOnly
     @Override
+    @com.mi.project.annotation.Cacheable(key = "'user:account:' + #account", ttl = 1800, dataType = "user")
     public User findUserByAccount(String account) {
         // 支持用户名或邮箱查找
         if (account.contains("@")) {

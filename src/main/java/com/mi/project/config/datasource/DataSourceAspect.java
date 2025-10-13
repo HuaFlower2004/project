@@ -66,7 +66,7 @@ public class DataSourceAspect {
 
         // 2. 检查方法上的@ReadOnly注解
         if (method.isAnnotationPresent(ReadOnly.class)) {
-            return "slave1";
+            return getSlaveDataSource(); // 使用负载均衡选择从库
         }
 
         // 3. 检查方法上的@Master注解
@@ -81,7 +81,7 @@ public class DataSourceAspect {
 
         // 5. 检查类上的@ReadOnly注解
         if (targetClass.isAnnotationPresent(ReadOnly.class)) {
-            return "slave1";
+            return getSlaveDataSource(); // 使用负载均衡选择从库
         }
 
         // 6. 根据方法名判断
@@ -93,10 +93,21 @@ public class DataSourceAspect {
                 methodName.startsWith("select") ||
                 methodName.startsWith("count") ||
                 methodName.startsWith("search")) {
-            return "slave1"; // 读操作使用从库
+            return getSlaveDataSource(); // 读操作使用从库负载均衡
         }
 
         // 7. 默认使用主库
         return "master";
+    }
+
+    /**
+     * 从库负载均衡选择
+     * 简单的轮询策略
+     */
+    private String getSlaveDataSource() {
+        // 简单的轮询策略，实际项目中可以使用更复杂的负载均衡算法
+        long currentTime = System.currentTimeMillis();
+        int slaveIndex = (int) (currentTime % 2) + 1; // 在slave1和slave2之间轮询
+        return "slave" + slaveIndex;
     }
 }
