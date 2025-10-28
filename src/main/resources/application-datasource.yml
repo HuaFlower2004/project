@@ -2,15 +2,16 @@ spring:
   datasource:
     dynamic:
       primary: master
-      strict: false
+      strict: true
+      lazy: true
       datasource:
-         master:
-           driver-class-name: com.mysql.cj.jdbc.Driver
-           url: jdbc:mysql://localhost:3306/project?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
-          username: root
-          password: mijiajie20040820
-          type: com.zaxxer.hikari.HikariDataSource
-          hikari:
+        master:
+         driver-class-name: com.mysql.cj.jdbc.Driver
+         url: jdbc:mysql://localhost:3306/project?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+         username: root
+         password: mijiajie20040820
+         type: com.zaxxer.hikari.HikariDataSource
+         hikari:
             minimum-idle: 5
             maximum-pool-size: 20
             connection-timeout: 30000
