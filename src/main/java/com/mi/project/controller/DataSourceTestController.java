@@ -4,6 +4,7 @@ package com.mi.project.controller;
 import com.mi.project.dto.userDTO.UserRegisterDTO;
 import com.mi.project.entity.User;
 import com.mi.project.common.Result;
+import com.mi.project.config.datasource.DataSourceContextHolder;
 import com.mi.project.repository.UserRepository;
 import com.mi.project.service.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,10 +42,14 @@ public class DataSourceTestController {
      */
     @GetMapping("/read/username/{username}")
     @Operation(summary = "测试读操作-用户名", description = "该操作应该使用从库")
-    public Result<User> testReadByUsername(@PathVariable String username) {
+    public Result<Map<String, Object>> testReadByUsername(@PathVariable String username) {
         log.info("API测试: 通过用户名查找用户(应使用从库)");
         User user = userService.findUserByAccount(username);
-        return Result.success("读取成功(使用从库)", user);
+        String ds = getLastUsedDataSourceLabel();
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("user", user);
+        resp.put("datasource", ds);
+        return Result.success("读取成功, 实际数据源=" + ds, resp);
     }
 
     /**
@@ -52,10 +57,14 @@ public class DataSourceTestController {
      */
     @GetMapping("/read/email/{email}")
     @Operation(summary = "测试读操作-邮箱", description = "该操作应该使用从库")
-    public Result<User> testReadByEmail(@PathVariable String email) {
+    public Result<Map<String, Object>> testReadByEmail(@PathVariable String email) {
         log.info("API测试: 通过邮箱查找用户(应使用从库)");
         User user = userRepository.findByEmail(email);
-        return Result.success("读取成功(使用从库)", user);
+        String ds = getLastUsedDataSourceLabel();
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("user", user);
+        resp.put("datasource", ds);
+        return Result.success("读取成功, 实际数据源=" + ds, resp);
     }
 
     /**
@@ -63,10 +72,14 @@ public class DataSourceTestController {
      */
     @GetMapping("/read/all")
     @Operation(summary = "测试读操作-列表", description = "该操作应该使用从库")
-    public Result<List<User>> testReadAll() {
+    public Result<Map<String, Object>> testReadAll() {
         log.info("API测试: 查询所有用户(应使用从库)");
         List<User> users = userRepository.findAll();
-        return Result.success("读取成功(使用从库)", users);
+        String ds = getLastUsedDataSourceLabel();
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("list", users);
+        resp.put("datasource", ds);
+        return Result.success("读取成功, 实际数据源=" + ds, resp);
     }
 
     /**
@@ -74,10 +87,14 @@ public class DataSourceTestController {
      */
     @GetMapping("/read/check/username/{username}")
     @Operation(summary = "测试读操作-用户名可用性", description = "该操作应该使用从库")
-    public Result<Boolean> testCheckUsername(@PathVariable String username) {
+    public Result<Map<String, Object>> testCheckUsername(@PathVariable String username) {
         log.info("API测试: 检查用户名可用性(应使用从库)");
-        boolean available = userService.isUsereNameAvailable(username);
-        return Result.success("查询成功(使用从库)", available);
+        boolean available = userService.isUserNameAvailable(username);
+        String ds = getLastUsedDataSourceLabel();
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("available", available);
+        resp.put("datasource", ds);
+        return Result.success("查询成功, 实际数据源=" + ds, resp);
     }
 
     /**
@@ -85,10 +102,14 @@ public class DataSourceTestController {
      */
     @GetMapping("/read/check/email/{email}")
     @Operation(summary = "测试读操作-邮箱可用性", description = "该操作应该使用从库")
-    public Result<Boolean> testCheckEmail(@PathVariable String email) {
+    public Result<Map<String, Object>> testCheckEmail(@PathVariable String email) {
         log.info("API测试: 检查邮箱可用性(应使用从库)");
         boolean available = userService.isUserEmailAvailable(email);
-        return Result.success("查询成功(使用从库)", available);
+        String ds = getLastUsedDataSourceLabel();
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("available", available);
+        resp.put("datasource", ds);
+        return Result.success("查询成功, 实际数据源=" + ds, resp);
     }
 
     /**
@@ -96,10 +117,14 @@ public class DataSourceTestController {
      */
     @GetMapping("/read/count")
     @Operation(summary = "测试读操作-统计", description = "该操作应该使用从库")
-    public Result<Long> testCount() {
+    public Result<Map<String, Object>> testCount() {
         log.info("API测试: 统计用户数量(应使用从库)");
         long count = userRepository.count();
-        return Result.success("统计成功(使用从库)", count);
+        String ds = getLastUsedDataSourceLabel();
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("count", count);
+        resp.put("datasource", ds);
+        return Result.success("统计成功, 实际数据源=" + ds, resp);
     }
 
     /**
@@ -107,11 +132,15 @@ public class DataSourceTestController {
      */
     @PostMapping("/write/register")
     @Operation(summary = "测试写操作-注册", description = "该操作应该使用主库")
-    public Result<User> testRegister(@RequestBody UserRegisterDTO registerDTO) {
+    public Result<Map<String, Object>> testRegister(@RequestBody UserRegisterDTO registerDTO) {
         log.info("API测试: 注册新用户(应使用主库)");
         try {
             User user = userService.register(registerDTO);
-            return Result.success("注册成功(使用主库)", user);
+            String ds = getLastUsedDataSourceLabel();
+            Map<String, Object> resp = new HashMap<>();
+            resp.put("user", user);
+            resp.put("datasource", ds);
+            return Result.success("注册成功, 实际数据源=" + ds, resp);
         } catch (Exception e) {
             return Result.failure(500, "注册失败: " + e.getMessage());
         }
@@ -122,7 +151,7 @@ public class DataSourceTestController {
      */
     @PostMapping("/write/save")
     @Operation(summary = "测试写操作-保存", description = "该操作应该使用主库")
-    public Result<User> testSave() {
+    public Result<Map<String, Object>> testSave() {
         log.info("API测试: 直接保存用户(应使用主库)");
 
         User user = User.builder()
@@ -133,7 +162,11 @@ public class DataSourceTestController {
                 .build();
 
         User saved = userRepository.save(user);
-        return Result.success("保存成功(使用主库)", saved);
+        String ds = getLastUsedDataSourceLabel();
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("user", saved);
+        resp.put("datasource", ds);
+        return Result.success("保存成功, 实际数据源=" + ds, resp);
     }
 
     /**
@@ -141,11 +174,15 @@ public class DataSourceTestController {
      */
     @DeleteMapping("/write/delete/{username}")
     @Operation(summary = "测试写操作-删除", description = "该操作应该使用主库")
-    public Result<Boolean> testDelete(@PathVariable String username) {
+    public Result<Map<String, Object>> testDelete(@PathVariable String username) {
         log.info("API测试: 删除用户(应使用主库)");
         try {
             boolean deleted = userService.deleteUser(username);
-            return Result.success("删除成功(使用主库)", deleted);
+            String ds = getLastUsedDataSourceLabel();
+            Map<String, Object> resp = new HashMap<>();
+            resp.put("deleted", deleted);
+            resp.put("datasource", ds);
+            return Result.success("删除成功, 实际数据源=" + ds, resp);
         } catch (Exception e) {
             return Result.failure(500, "删除失败: " + e.getMessage());
         }
@@ -163,9 +200,10 @@ public class DataSourceTestController {
 
         try {
             // 1. 读操作 - 查询用户数量(从库)
-            long beforeCount = userRepository.count();
+        long beforeCount = userRepository.count();
             result.put("step1_count_before", beforeCount);
-            log.info("步骤1: 查询用户数量(从库) = {}", beforeCount);
+        result.put("step1_ds", getLastUsedDataSourceLabel());
+        log.info("步骤1: 查询用户数量, ds={}", result.get("step1_ds"));
 
             // 2. 写操作 - 创建新用户(主库)
             User newUser = User.builder()
@@ -175,24 +213,28 @@ public class DataSourceTestController {
                     .isActive(true)
                     .build();
 
-            User saved = userRepository.save(newUser);
+        User saved = userRepository.save(newUser);
             result.put("step2_created_user", saved.getUserName());
-            log.info("步骤2: 创建新用户(主库) = {}", saved.getUserName());
+        result.put("step2_ds", getLastUsedDataSourceLabel());
+        log.info("步骤2: 创建新用户, ds={}", result.get("step2_ds"));
 
             // 3. 读操作 - 检查用户名可用性(从库)
-            boolean available = userService.isUsereNameAvailable("nonexist");
+        boolean available = userService.isUserNameAvailable("nonexist");
             result.put("step3_username_available", available);
-            log.info("步骤3: 检查用户名可用性(从库) = {}", available);
+        result.put("step3_ds", getLastUsedDataSourceLabel());
+        log.info("步骤3: 检查用户名可用性, ds={}", result.get("step3_ds"));
 
             // 4. 读操作 - 查找刚创建的用户(从库)
-            User found = userService.findUserByAccount(saved.getUserName());
+        User found = userService.findUserByAccount(saved.getUserName());
             result.put("step4_found_user", found != null ? found.getId() : null);
-            log.info("步骤4: 查找刚创建的用户(从库) = {}", found != null ? "找到" : "未找到");
+        result.put("step4_ds", getLastUsedDataSourceLabel());
+        log.info("步骤4: 查找刚创建的用户, ds={}", result.get("step4_ds"));
 
             // 5. 读操作 - 再次查询用户数量(从库)
-            long afterCount = userRepository.count();
+        long afterCount = userRepository.count();
             result.put("step5_count_after", afterCount);
-            log.info("步骤5: 再次查询用户数量(从库) = {}", afterCount);
+        result.put("step5_ds", getLastUsedDataSourceLabel());
+        log.info("步骤5: 再次查询用户数量, ds={}", result.get("step5_ds"));
 
             result.put("success", true);
             result.put("message", "混合操作测试完成,数据源切换正常");
@@ -246,10 +288,19 @@ public class DataSourceTestController {
         result.put("iterations", iterations);
         result.put("duration_ms", duration);
         result.put("avg_time_ms", duration / (double) iterations);
-        result.put("datasource", "slave1(从库)");
+        result.put("datasource", getLastUsedDataSourceLabel());
 
         log.info("读压力测试完成: {}次操作耗时{}ms", iterations, duration);
 
         return Result.success("压力测试完成", result);
+    }
+
+    private String getLastUsedDataSourceLabel() {
+        String ds = DataSourceContextHolder.getLastUsedDataSource();
+        if (ds == null) return "unknown";
+        if ("master".equals(ds)) return "master(主库)";
+        if ("slave1".equals(ds)) return "slave1(从库)";
+        if ("slave2".equals(ds)) return "slave2(从库)";
+        return ds;
     }
 }

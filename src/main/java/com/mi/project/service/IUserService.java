@@ -1,12 +1,10 @@
 package com.mi.project.service;
-
 import com.mi.project.config.datasource.Master;
 import com.mi.project.config.datasource.ReadOnly;
 import com.mi.project.dto.userDTO.UserRegisterDTO;
 import com.mi.project.dto.userDTO.UserUpdateDTO;
 import com.mi.project.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
-
 /**
  * <p>
  *  服务类
@@ -21,7 +19,7 @@ public interface IUserService extends IService<User> {
     User register(UserRegisterDTO userRegisterDTO);
 
     @ReadOnly
-    boolean isUsereNameAvailable(String userName);
+    boolean isUserNameAvailable(String userName);
 
     @ReadOnly
     boolean isUserEmailAvailable(String email);
@@ -34,5 +32,4 @@ public interface IUserService extends IService<User> {
 
     @Master
     boolean deleteUser(String userName);
-
 }

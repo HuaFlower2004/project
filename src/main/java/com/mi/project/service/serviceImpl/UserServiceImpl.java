@@ -68,7 +68,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @ReadOnly
     @Override
     @com.mi.project.annotation.Cacheable(key = "'user:available:' + #userName", ttl = 300, dataType = "user")
-    public boolean isUsereNameAvailable(String userName) {
+    public boolean isUserNameAvailable(String userName) {
         return !userRepository.existsByUserName(userName);
     }
 
@@ -95,7 +95,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
     }
 
-    @ReadOnly
+    @Master
     @Override
     @Transactional
     public User updateUserInfo(String userName, UserUpdateDTO updateDTO) {
@@ -106,7 +106,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }else{
             throw new RuntimeException("用户不存在");
         }
-
         // 2. 更新邮箱（如果提供了新邮箱）
         if (StringUtils.hasText(updateDTO.getEmail())) {
             // 检查邮箱是否被其他用户使用
@@ -118,7 +117,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             }
             user.setEmail(updateDTO.getEmail());
         }
-
         // 3. 更新手机号（如果提供了新手机号）
         if (StringUtils.hasText(updateDTO.getPhoneNumber())) {
             // 检查手机号是否被其他用户使用
@@ -130,23 +128,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             }
             user.setPhoneNumber(updateDTO.getPhoneNumber());
         }
-
         // 4. 更新密码（如果提供了新密码）
         if (StringUtils.hasText(updateDTO.getNewPassword())) {
             // 检查是否提供了当前密码
             if (!StringUtils.hasText(updateDTO.getCurrentPassword())) {
                 throw new RuntimeException("修改密码需要提供当前密码");
             }
-
             // 验证当前密码
             if (!passwordEncoder.matches(updateDTO.getCurrentPassword(), user.getPassword())) {
                 throw new RuntimeException("当前密码错误");
             }
-
             // 更新密码
             user.setPassword(passwordEncoder.encode(updateDTO.getNewPassword()));
         }
-
         // 5. 保存并返回
         return userRepository.save(user);
     }

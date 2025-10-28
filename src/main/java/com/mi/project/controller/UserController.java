@@ -175,7 +175,7 @@ public class UserController {
     @Operation(summary = "检查用户名", description = "检查用户名是否可行用")
     @ResponseBody
     public Result<Boolean> checkUserName(@RequestParam String userName) {
-        boolean isAvailable = userService.isUsereNameAvailable(userName);
+        boolean isAvailable = userService.isUserNameAvailable(userName);
         return Result.success(isAvailable ? "用户名可用" : "用户名不可用", isAvailable);
     }
 

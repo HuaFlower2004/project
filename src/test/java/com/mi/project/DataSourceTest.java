@@ -77,7 +77,7 @@ public class DataSourceTest {
         log.info("========== 测试Service读操作(应使用从库) ==========");
 
         // 1. 测试用户名是否可用(读操作)
-        boolean available = userService.isUsereNameAvailable("testuser123");
+        boolean available = userService.isUserNameAvailable("testuser123");
         log.info("用户名 testuser123 是否可用: {}", available);
 
         // 2. 测试邮箱是否可用(读操作)
@@ -246,7 +246,7 @@ public class DataSourceTest {
 
             // 3. 读操作 - 检查用户名是否可用(从库)
             log.info("步骤3: 检查用户名可用性(应使用从库)");
-            boolean available = userService.isUsereNameAvailable("testuser999");
+            boolean available = userService.isUserNameAvailable("testuser999");
             log.info("用户名 testuser999 可用性: {}", available);
 
             // 4. 读操作 - 通过账号查找刚注册的用户(从库)

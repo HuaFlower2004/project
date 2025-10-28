@@ -1,9 +1,5 @@
-
-// 文件路径: src/main/java/com/mi/project/config/datasource/DS.java
 package com.mi.project.config.datasource;
-
 import java.lang.annotation.*;
-
 /**
  * 数据源切换注解
  * 可以用在类或方法上,指定使用哪个数据源

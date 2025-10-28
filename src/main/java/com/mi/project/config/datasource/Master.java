@@ -1,8 +1,5 @@
-// 文件路径: src/main/java/com/mi/project/config/datasource/Master.java
 package com.mi.project.config.datasource;
-
 import java.lang.annotation.*;
-
 /**
  * 主库操作注解
  * 标注此注解的方法会强制使用主库(master)
