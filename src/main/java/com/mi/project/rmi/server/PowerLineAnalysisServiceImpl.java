@@ -246,4 +246,3 @@ public class PowerLineAnalysisServiceImpl implements PowerLineAnalysisService {
     }
 }
 
-

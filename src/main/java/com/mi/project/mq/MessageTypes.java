@@ -43,4 +43,3 @@ public class MessageTypes {
     public static final String DATA_RESTORE = "data.restore";
 }
 
-

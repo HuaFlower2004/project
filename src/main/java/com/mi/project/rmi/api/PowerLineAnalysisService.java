@@ -71,4 +71,3 @@ public interface PowerLineAnalysisService extends Remote {
     Map<String, Object> getHealthStatus() throws RemoteException;
 }
 
-

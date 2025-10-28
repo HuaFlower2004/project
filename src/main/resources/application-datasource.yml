@@ -4,18 +4,18 @@ spring:
       primary: master
       strict: false
       datasource:
-        master:
+         master:
            driver-class-name: com.mysql.cj.jdbc.Driver
            url: jdbc:mysql://localhost:3306/project?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
-           username: root
-           password: mijiajie20040820
-           type: com.zaxxer.hikari.HikariDataSource
-           hikari:
-             minimum-idle: 5
-             maximum-pool-size: 20
-             connection-timeout: 30000
-             idle-timeout: 600000
-             max-lifetime: 1800000
+          username: root
+          password: mijiajie20040820
+          type: com.zaxxer.hikari.HikariDataSource
+          hikari:
+            minimum-idle: 5
+            maximum-pool-size: 20
+            connection-timeout: 30000
+            idle-timeout: 600000
+            max-lifetime: 1800000
         slave1:
           driver-class-name: com.mysql.cj.jdbc.Driver
           url: jdbc:mysql://192.168.108.153:3306/project?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
@@ -40,12 +40,12 @@ spring:
             connection-timeout: 30000
             idle-timeout: 600000
             max-lifetime: 1800000
+
 logging:
   level:
     com.mi.project.config.datasource: DEBUG
     com.zaxxer.hikari: DEBUG
     org.springframework.jdbc: DEBUG
-
 # 注意事项:
 # 1. 确保两台电脑的MySQL都已配置好主从复制
 # 2. 确保防火墙开放了3306端口
