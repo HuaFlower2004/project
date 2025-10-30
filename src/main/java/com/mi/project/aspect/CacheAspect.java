@@ -73,6 +73,10 @@ public class CacheAspect {
                 cacheService.setCache(cacheKey, result, ttlSeconds);
                 
                 log.debug("设置缓存: key={}, ttl={}s", cacheKey, ttlSeconds);
+                // 记录热点数据访问（缓存建立后）
+                if (cacheable.enableHotDataTracking()) {
+                    cacheService.recordDataAccess(cacheKey, cacheable.dataType());
+                }
             }
 
             return result;

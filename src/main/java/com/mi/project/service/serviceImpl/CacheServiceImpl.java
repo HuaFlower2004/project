@@ -127,7 +127,18 @@ public class CacheServiceImpl implements ICacheService {
             redisTemplate.opsForZSet().add(hotDataKey, dataKey, newScore);
             redisTemplate.expire(hotDataKey, hotDataWindow * 2, TimeUnit.SECONDS);
 
-            log.debug("记录数据访问: dataKey={}, dataType={}", dataKey, dataType);
+            // 如果达到热点阈值，尝试延长缓存TTL
+            if (newScore >= hotDataThreshold) {
+                String cacheKey = CACHE_PREFIX + dataKey;
+                Long ttl = redisTemplate.getExpire(cacheKey, TimeUnit.SECONDS);
+                // 剩余TTL小于10分钟则延长到2小时
+                if (ttl != null && ttl > 0 && ttl < 600) {
+                    redisTemplate.expire(cacheKey, 7200, TimeUnit.SECONDS);
+                    log.info("热点数据缓存已延长: key={}, score={}, newTTL=7200s", dataKey, newScore);
+                }
+            }
+
+            log.debug("记录数据访问: dataKey={}, dataType={}, score={}", dataKey, dataType, newScore);
         } catch (Exception e) {
             log.error("记录数据访问失败: dataKey={}, dataType={}", dataKey, dataType, e);
         }

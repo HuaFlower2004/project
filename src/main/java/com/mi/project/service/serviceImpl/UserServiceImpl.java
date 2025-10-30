@@ -9,6 +9,7 @@ import com.mi.project.exception.UserException;
 import com.mi.project.mapper.UserMapper;
 import com.mi.project.repository.UserRepository;
 import com.mi.project.service.IUserService;
+import com.mi.project.service.ICacheService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,7 @@ import java.time.LocalDateTime;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
 
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final ICacheService cacheService;
 
     @Autowired
     UserRepository userRepository;
@@ -106,6 +108,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }else{
             throw new RuntimeException("用户不存在");
         }
+        String originalEmail = user.getEmail();
+        String originalPhone = user.getPhoneNumber();
         // 2. 更新邮箱（如果提供了新邮箱）
         if (StringUtils.hasText(updateDTO.getEmail())) {
             // 检查邮箱是否被其他用户使用
@@ -141,8 +145,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             // 更新密码
             user.setPassword(passwordEncoder.encode(updateDTO.getNewPassword()));
         }
-        // 5. 保存并返回
-        return userRepository.save(user);
+        // 5. 保存更新
+        User updatedUser = userRepository.save(user);
+
+        // 6. 清除相关缓存，确保一致性
+        clearUserCache(userName, originalEmail, originalPhone);
+        // 如果更改了邮箱/手机号，也清理新键以避免短期并发脏读
+        if (StringUtils.hasText(updateDTO.getEmail())) {
+            cacheService.deleteCache("user:account:" + updateDTO.getEmail());
+            cacheService.deleteCache("email:available:" + updateDTO.getEmail());
+        }
+        if (StringUtils.hasText(updateDTO.getPhoneNumber())) {
+            cacheService.deleteCache("user:account:" + updateDTO.getPhoneNumber());
+        }
+
+        return updatedUser;
     }
 
     @Master
@@ -155,5 +172,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             return true;
         }
         return false;
+    }
+
+    /**
+     * 清除用户相关缓存键
+     */
+    private void clearUserCache(String userName, String email, String phoneNumber) {
+        // 用户信息缓存
+        cacheService.deleteCache("user:account:" + userName);
+        if (StringUtils.hasText(email)) {
+            cacheService.deleteCache("user:account:" + email);
+        }
+        if (StringUtils.hasText(phoneNumber)) {
+            cacheService.deleteCache("user:account:" + phoneNumber);
+        }
+        // 可用性缓存
+        cacheService.deleteCache("user:available:" + userName);
+        if (StringUtils.hasText(email)) {
+            cacheService.deleteCache("email:available:" + email);
+        }
     }
 }
