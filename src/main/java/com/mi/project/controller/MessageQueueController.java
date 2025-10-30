@@ -1,5 +1,4 @@
 package com.mi.project.controller;
-
 import com.mi.project.common.Result;
 import com.mi.project.mq.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-
 /**
  * 消息队列管理控制器
  * 提供消息队列操作和监控功能
@@ -23,9 +21,7 @@ import java.util.Map;
 @Tag(name = "消息队列管理", description = "消息队列操作和监控")
 @CrossOrigin(origins = {"http://192.168.93.182:5174", "http://192.168.93.182:5173"})
 public class MessageQueueController {
-
     private final MessageProducer messageProducer;
-
     @PostMapping("/file/process")
     @Operation(summary = "发送文件处理消息", description = "发送文件处理消息到队列")
     public Result<String> sendFileProcessMessage(@RequestBody FileProcessMessage message) {

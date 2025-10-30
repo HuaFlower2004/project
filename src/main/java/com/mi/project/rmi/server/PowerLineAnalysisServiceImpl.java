@@ -1,5 +1,4 @@
 package com.mi.project.rmi.server;
-
 import com.mi.project.rmi.api.PowerLineAnalysisService;
 import com.mi.project.util.PythonScriptExecutorUtil;
 import lombok.RequiredArgsConstructor;
@@ -10,26 +9,22 @@ import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-
 /**
  * 电力线分析远程服务实现
  * 提供电力线点云数据处理和分析功能
+ * @author 31591
  */
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class PowerLineAnalysisServiceImpl implements PowerLineAnalysisService {
-
     private final PythonScriptExecutorUtil pythonScriptExecutor;
-    
     // 任务状态存储
     private final Map<String, Map<String, Object>> taskStatusMap = new ConcurrentHashMap<>();
-
     @Override
     public Map<String, Object> processLasFile(String filePath, String outputDir) throws RemoteException {
         String taskId = UUID.randomUUID().toString();
         log.info("开始处理LAS文件: {}, 任务ID: {}", filePath, taskId);
-        
         try {
             // 初始化任务状态
             Map<String, Object> taskStatus = new HashMap<>();
@@ -40,27 +35,21 @@ public class PowerLineAnalysisServiceImpl implements PowerLineAnalysisService {
             taskStatus.put("outputDir", outputDir);
             taskStatus.put("progress", 0);
             taskStatusMap.put(taskId, taskStatus);
-
             // 执行Python脚本处理
             String result = pythonScriptExecutor.executeFileAnalysis("", filePath, outputDir);
-            
             // 更新任务状态
             taskStatus.put("status", "COMPLETED");
             taskStatus.put("endTime", LocalDateTime.now());
             taskStatus.put("progress", 100);
             taskStatus.put("result", result);
-
             Map<String, Object> response = new HashMap<>();
             response.put("taskId", taskId);
             response.put("status", "SUCCESS");
             response.put("message", "文件处理完成");
             response.put("result", result);
-
             return response;
-
         } catch (Exception e) {
             log.error("处理LAS文件失败: {}", filePath, e);
-            
             // 更新任务状态为失败
             Map<String, Object> taskStatus = taskStatusMap.get(taskId);
             if (taskStatus != null) {
@@ -68,12 +57,10 @@ public class PowerLineAnalysisServiceImpl implements PowerLineAnalysisService {
                 taskStatus.put("endTime", LocalDateTime.now());
                 taskStatus.put("error", e.getMessage());
             }
-
             Map<String, Object> response = new HashMap<>();
             response.put("taskId", taskId);
             response.put("status", "ERROR");
             response.put("message", "文件处理失败: " + e.getMessage());
-            
             return response;
         }
     }

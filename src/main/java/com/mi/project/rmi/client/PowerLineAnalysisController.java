@@ -1,5 +1,4 @@
 package com.mi.project.rmi.client;
-
 import com.mi.project.common.Result;
 import com.mi.project.rmi.api.PowerLineAnalysisService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,10 +13,10 @@ import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 /**
  * 电力线分析RMI客户端控制器
  * 调用远程电力线分析服务
+ * @author 31591
  */
 @Slf4j
 @RestController
@@ -25,9 +24,7 @@ import java.util.Map;
 @Tag(name = "电力线分析RMI", description = "远程电力线分析服务调用")
 @CrossOrigin(origins = {"http://192.168.93.182:5174", "http://192.168.93.182:5173"})
 public class PowerLineAnalysisController {
-
     private static final String RMI_SERVICE_URL = "rmi://192.168.181.152:1099/PowerLineAnalysisService";
-
     /**
      * 获取RMI服务实例
      */

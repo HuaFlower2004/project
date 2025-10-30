@@ -10,6 +10,9 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
+/**
+ * @author 31591
+ */
 @RestController
 public class HelloController {
     @GetMapping("/hello")

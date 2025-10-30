@@ -1,5 +1,4 @@
 package com.mi.project.mq;
-
 import com.mi.project.util.WebSocketSenderUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -7,7 +6,6 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-
 /**
  * 消息消费者
  * 处理各种类型的消息
@@ -16,7 +14,6 @@ import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
 public class MessageConsumer {
-
     /**
      * 处理文件处理消息
      */

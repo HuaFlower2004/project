@@ -1,26 +1,29 @@
 package com.mi.project.mq;
-
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.Message;
-import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 /**
  * 消息生产者
  * 负责发送各种类型的消息到RabbitMQ
+ * @author 31591
  */
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class MessageProducer {
-
     private final RabbitTemplate rabbitTemplate;
-
+    public MessageProducer(RabbitTemplate rabbitTemplate) {
+        this.rabbitTemplate = rabbitTemplate;
+        // 配置消息返回回调
+        this.rabbitTemplate.setReturnsCallback(returned -> {
+            log.error("消息发送失败，返回消息: {}, 路由键: {}, 交换机: {}",
+                    returned.getMessage(),
+                    returned.getRoutingKey(),
+                    returned.getExchange());
+        });
+    }
     /**
      * 发送文件处理消息
      */
@@ -43,7 +46,6 @@ public class MessageProducer {
             throw new RuntimeException("发送消息失败", e);
         }
     }
-
     /**
      * 发送电力线分析消息
      */

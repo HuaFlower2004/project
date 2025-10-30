@@ -7,6 +7,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.rmi.Naming;
 
+/**
+ * @author 31591
+ */
 @RestController
 @RequestMapping("/rmi/file")
 public class FileRmiController {

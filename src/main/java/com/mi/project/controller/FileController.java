@@ -74,7 +74,6 @@ public class FileController {
                 .description(description)
                 .userName(userName)
                 .build();
-
         try {
             // 获取当前用户
             User currentUser = (User) request.getAttribute("currentUser");
@@ -84,7 +83,6 @@ public class FileController {
 
             // 上传文件
             File file = fileService.uploadFile(uploadDTO, currentUser);
-
             WebSocketSenderUtil.sendJsonToAll("{\n" +
                     "  \"type\": \"complete\",\n" +
                     "  \"status\": \"success\",\n" +
@@ -101,7 +99,6 @@ public class FileController {
             return Result.failure(500,"文件上传失败: "+e.getMessage());
         }
     }
-
     @GetMapping("/list")
     @Operation(summary = "获取用户文件列表")
     @ResponseBody

@@ -11,6 +11,8 @@ import com.mi.project.repository.FileRepository;
 import com.mi.project.service.IFileService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mi.project.util.*;
+import com.mi.project.mq.FileProcessMessage;
+import com.mi.project.mq.MessageProducer;
 import jakarta.annotation.Resource;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -44,21 +46,18 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements IF
 
     private final PythonScriptExecutorUtil pythonScriptExecutor;
 
+    private final MessageProducer messageProducer;
+
     @Override
     @Transactional
     @Master
     public File uploadFile(FileUploadDTO uploadDTO, User user) {
         try {
-
             MultipartFile multipartFile = uploadDTO.getFile();
-
             // 存储文件相对路径和文件名字都在里面。
             List<String> result = fileStorageUtil.storeFile(multipartFile, user.getUserName());
-
             // 创建文件记录
-
             LocalDateTime localDateTime = LocalDateTime.now();
-
             File file = File.builder()
                     .fileName(multipartFile.getOriginalFilename())
                     .storedFileName(result.get(1))
@@ -72,17 +71,21 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements IF
                     .fileSize((int) multipartFile.getSize())
                     .user(user)
                     .build();
-
-            // 保存文件记录
             File savedFile = fileRepository.save(file);
 
-            // 异步处理文件
-            processFileAsync(savedFile.getId(), uploadDTO.getPostParams(), result.get(4));
-
-            String processResult =  cloudUploadUtil.uploadLocalFile("C:\\Users\\31591\\Desktop\\project\\src\\main\\resources\\json\\ransac_json\\powerline_curves-1_report.html", "powerline_curves-1_report.html");
-            file.setProcessResult(processResult);
-            log.info("文件上传成功: {} (ID: {})", multipartFile.getOriginalFilename(), savedFile.getId());
-            file.setProcessEndTime(LocalDateTime.now());
+            // --- ⬇️ 改为通过MQ推送文件处理消息 --
+            FileProcessMessage msg = FileProcessMessage.create(
+                savedFile.getId(),
+                savedFile.getFileName(),
+                savedFile.getRelativeFilePath(),
+                savedFile.getFileType(),
+                (long) savedFile.getFileSize(),
+                user.getId(),
+                user.getUserName()
+            );
+            // 可以补充参数、其他业务信息
+            messageProducer.sendFileProcessMessage(msg);
+            log.info("文件处理消息已推送到队列，等待异步消费 fileId={}", savedFile.getId());
             return savedFile;
 
         } catch (Exception e) {
