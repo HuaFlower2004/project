@@ -28,6 +28,11 @@ public @interface Cacheable {
     TimeUnit timeUnit() default TimeUnit.SECONDS;
 
     /**
+     * 是否优先使用配置文件中的TTL（cache.ttl.*），未配置则回退到注解ttl
+     */
+    boolean useConfiguredTtl() default false;
+
+    /**
      * 是否启用热点数据识别
      */
     boolean enableHotDataTracking() default true;

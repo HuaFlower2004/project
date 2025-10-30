@@ -2,6 +2,7 @@ package com.mi.project.aspect;
 
 import com.mi.project.annotation.Cacheable;
 import com.mi.project.service.ICacheService;
+import com.mi.project.config.CacheTtlProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -33,6 +34,7 @@ public class CacheAspect {
     private final ICacheService cacheService;
     private final ExpressionParser parser = new SpelExpressionParser();
     private final DefaultParameterNameDiscoverer nameDiscoverer = new DefaultParameterNameDiscoverer();
+    private final CacheTtlProperties cacheTtlProperties;
 
     @Around("@annotation(cacheable)")
     public Object around(ProceedingJoinPoint joinPoint, Cacheable cacheable) throws Throwable {
@@ -68,8 +70,8 @@ public class CacheAspect {
 
             // 检查是否应该缓存结果
             if (result != null && evaluateCondition(cacheable.unless(), method, args, result)) {
-                // 设置缓存
-                long ttlSeconds = TimeUnit.SECONDS.convert(cacheable.ttl(), cacheable.timeUnit());
+                // 设置缓存（支持 ttl=0 走配置文件的TTL）
+                long ttlSeconds = resolveTtlSeconds(cacheable);
                 cacheService.setCache(cacheKey, result, ttlSeconds);
                 
                 log.debug("设置缓存: key={}, ttl={}s", cacheKey, ttlSeconds);
@@ -86,6 +88,33 @@ public class CacheAspect {
             // 缓存异常不影响业务逻辑
             return joinPoint.proceed();
         }
+    }
+
+    /**
+     * 解析TTL：
+     * - 当 useConfiguredTtl=true 时，优先读取配置文件 cache.ttl.*，未配置则回退到注解 ttl。
+     * - 当 useConfiguredTtl=false 时，仅使用注解 ttl（保持原行为）。
+     */
+    private long resolveTtlSeconds(Cacheable cacheable) {
+        if (cacheable.useConfiguredTtl()) {
+            String type = cacheable.dataType();
+            Long configured = null;
+            if ("user".equalsIgnoreCase(type)) {
+                configured = cacheTtlProperties.getUser();
+            } else if ("file".equalsIgnoreCase(type)) {
+                configured = cacheTtlProperties.getFile();
+            } else if ("list".equalsIgnoreCase(type)) {
+                configured = cacheTtlProperties.getList();
+            }
+            if (configured == null) {
+                configured = cacheTtlProperties.getDefault();
+            }
+            if (configured != null && configured > 0) {
+                return configured;
+            }
+            // 配置缺失则回退注解值
+        }
+        return TimeUnit.SECONDS.convert(cacheable.ttl(), cacheable.timeUnit());
     }
 
     /**
