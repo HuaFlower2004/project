@@ -5,6 +5,9 @@ import org.springframework.stereotype.Component;
 
 import java.rmi.RemoteException;
 
+/**
+ * @author 31591
+ */
 @Component
 public class HelloServiceImpl implements HelloService {
 
@@ -14,6 +17,6 @@ public class HelloServiceImpl implements HelloService {
 
     @Override
     public String sayHello(String name) {
-        return "沟槽🐀大战沟槽🐖";
+        return "远程测试成功";
     }
 }

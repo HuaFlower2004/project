@@ -1,13 +1,12 @@
 package com.mi.project.config;
-
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
-
 /**
  * 绑定配置项 cache.ttl.*，用于集中管理不同数据类型的TTL。
  * 仅绑定即可消除IDE对属性“无法解析”的告警；
  * 如需生效，可在业务处按需注入使用。
+ * @author 31591
  */
 @Data
 @Component
@@ -15,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class CacheTtlProperties {
 
     /** 默认TTL（秒） */
-    private Long defaults; // 可映射 yml 中 default，需要自定义setter
+    private Long defaults;
 
     /** 用户相关TTL（秒） */
     private Long user;

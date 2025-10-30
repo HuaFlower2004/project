@@ -1,5 +1,4 @@
 package com.mi.project.aspect;
-
 import com.mi.project.annotation.Cacheable;
 import com.mi.project.service.ICacheService;
 import com.mi.project.config.CacheTtlProperties;
@@ -20,76 +19,54 @@ import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
-
 /**
  * 缓存切面
  * 实现自定义缓存注解的功能
+ * @author 31591
  */
 @Slf4j
 @Aspect
 @Component
 @RequiredArgsConstructor
 public class CacheAspect {
-
     private final ICacheService cacheService;
     private final ExpressionParser parser = new SpelExpressionParser();
     private final DefaultParameterNameDiscoverer nameDiscoverer = new DefaultParameterNameDiscoverer();
     private final CacheTtlProperties cacheTtlProperties;
-
     @Around("@annotation(cacheable)")
     public Object around(ProceedingJoinPoint joinPoint, Cacheable cacheable) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
         Object[] args = joinPoint.getArgs();
-
-        // 生成缓存键
         String cacheKey = generateCacheKey(cacheable, method, args);
-        
-        // 检查缓存条件
         if (!evaluateCondition(cacheable.condition(), method, args)) {
             return joinPoint.proceed();
         }
-
         try {
-            // 尝试从缓存获取
             Object result = cacheService.getCache(cacheKey, Object.class);
             if (result != null) {
                 log.debug("缓存命中: key={}", cacheKey);
-                
-                // 记录热点数据访问
                 if (cacheable.enableHotDataTracking()) {
                     cacheService.recordDataAccess(cacheKey, cacheable.dataType());
                 }
-                
                 return result;
             }
-
-            // 缓存未命中，执行方法
             log.debug("缓存未命中: key={}", cacheKey);
             result = joinPoint.proceed();
-
-            // 检查是否应该缓存结果
             if (result != null && evaluateCondition(cacheable.unless(), method, args, result)) {
-                // 设置缓存（支持 ttl=0 走配置文件的TTL）
                 long ttlSeconds = resolveTtlSeconds(cacheable);
                 cacheService.setCache(cacheKey, result, ttlSeconds);
-                
                 log.debug("设置缓存: key={}, ttl={}s", cacheKey, ttlSeconds);
-                // 记录热点数据访问（缓存建立后）
                 if (cacheable.enableHotDataTracking()) {
                     cacheService.recordDataAccess(cacheKey, cacheable.dataType());
                 }
             }
-
             return result;
-
         } catch (Exception e) {
             log.error("缓存操作异常: key={}", cacheKey, e);
-            // 缓存异常不影响业务逻辑
             return joinPoint.proceed();
         }
     }
-
     /**
      * 解析TTL：
      * - 当 useConfiguredTtl=true 时，优先读取配置文件 cache.ttl.*，未配置则回退到注解 ttl。
@@ -116,7 +93,7 @@ public class CacheAspect {
         }
         return TimeUnit.SECONDS.convert(cacheable.ttl(), cacheable.timeUnit());
     }
-
+    // generateCacheKey、evaluateCondition等辅助方法...
     /**
      * 生成缓存键
      */

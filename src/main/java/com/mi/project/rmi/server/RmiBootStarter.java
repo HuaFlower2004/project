@@ -2,6 +2,7 @@ package com.mi.project.rmi.server;
 
 import com.mi.project.rmi.api.HelloService;
 import com.mi.project.rmi.api.PowerLineAnalysisService;
+import com.mi.project.rmi.api.FileRmiService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,7 @@ public class RmiBootStarter {
     
     private final HelloService helloService;
     private final PowerLineAnalysisService powerLineAnalysisService;
+    private final FileRmiService fileRmiService;
 
     @PostConstruct
     public void start() throws Exception {
@@ -44,17 +46,24 @@ public class RmiBootStarter {
         int helloPort = 20001;
         Remote helloStub = UnicastRemoteObject.exportObject((Remote) helloService, helloPort);
         registry.rebind("HelloService", helloStub);
-        log.info("✅ HelloService 已注册，端口: {}", helloPort);
+        log.info("HelloService 已注册，端口: {}", helloPort);
 
         // 注册PowerLineAnalysisService
         int analysisPort = 20002;
         Remote analysisStub = UnicastRemoteObject.exportObject((Remote) powerLineAnalysisService, analysisPort);
         registry.rebind("PowerLineAnalysisService", analysisStub);
-        log.info("✅ PowerLineAnalysisService 已注册，端口: {}", analysisPort);
+        log.info("PowerLineAnalysisService 已注册，端口: {}", analysisPort);
 
-        log.info("🎉 所有RMI服务启动完成！");
+        // 注册FileRmiService
+        int filePort = 20003;
+        Remote fileStub = UnicastRemoteObject.exportObject((Remote) fileRmiService, filePort);
+        registry.rebind("FileRmiService", fileStub);
+        log.info("FileRmiService 已注册，端口: {}", filePort);
+
+        log.info("所有RMI服务启动完成！");
         log.info("服务列表:");
         log.info("  - HelloService: rmi://192.168.181.152:1099/HelloService");
         log.info("  - PowerLineAnalysisService: rmi://192.168.181.152:1099/PowerLineAnalysisService");
+        log.info("  - FileRmiService: rmi://192.168.181.152:1099/FileRmiService");
     }
 }

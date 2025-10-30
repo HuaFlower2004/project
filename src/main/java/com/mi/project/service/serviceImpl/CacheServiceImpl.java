@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * 缓存服务实现类
  * 实现Redis缓存操作和热点数据识别
+ * @author 31591
  */
 @Slf4j
 @Service
@@ -79,7 +80,7 @@ public class CacheServiceImpl implements ICacheService {
     public void deleteCachePattern(String pattern) {
         try {
             Set<String> keys = redisTemplate.keys(CACHE_PREFIX + pattern);
-            if (keys != null && !keys.isEmpty()) {
+            if (!keys.isEmpty()) {
                 redisTemplate.delete(keys);
                 log.debug("批量删除缓存成功: pattern={}, count={}", pattern, keys.size());
             }
@@ -92,7 +93,7 @@ public class CacheServiceImpl implements ICacheService {
     public boolean hasCache(String key) {
         try {
             String cacheKey = CACHE_PREFIX + key;
-            return Boolean.TRUE.equals(redisTemplate.hasKey(cacheKey));
+            return redisTemplate.hasKey(cacheKey);
         } catch (Exception e) {
             log.error("检查缓存存在性失败: key={}", key, e);
             return false;
@@ -125,14 +126,14 @@ public class CacheServiceImpl implements ICacheService {
             Double currentScore = redisTemplate.opsForZSet().score(hotDataKey, dataKey);
             double newScore = (currentScore != null ? currentScore : 0) + 1;
             redisTemplate.opsForZSet().add(hotDataKey, dataKey, newScore);
-            redisTemplate.expire(hotDataKey, hotDataWindow * 2, TimeUnit.SECONDS);
+            redisTemplate.expire(hotDataKey, hotDataWindow * 2L, TimeUnit.SECONDS);
 
             // 如果达到热点阈值，尝试延长缓存TTL
             if (newScore >= hotDataThreshold) {
                 String cacheKey = CACHE_PREFIX + dataKey;
-                Long ttl = redisTemplate.getExpire(cacheKey, TimeUnit.SECONDS);
+                long ttl = redisTemplate.getExpire(cacheKey, TimeUnit.SECONDS);
                 // 剩余TTL小于10分钟则延长到2小时
-                if (ttl != null && ttl > 0 && ttl < 600) {
+                if (ttl > 0 && ttl < 600) {
                     redisTemplate.expire(cacheKey, 7200, TimeUnit.SECONDS);
                     log.info("热点数据缓存已延长: key={}, score={}, newTTL=7200s", dataKey, newScore);
                 }
@@ -155,7 +156,7 @@ public class CacheServiceImpl implements ICacheService {
             if (hotData != null) {
                 for (ZSetOperations.TypedTuple<Object> tuple : hotData) {
                     if (tuple.getScore() != null && tuple.getScore() >= hotDataThreshold) {
-                        result.add(tuple.getValue().toString());
+                        result.add(Objects.requireNonNull(tuple.getValue()).toString());
                     }
                 }
             }
