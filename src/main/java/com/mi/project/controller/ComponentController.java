@@ -30,19 +30,15 @@ public class ComponentController {
     private final SimpleExcelUtil simpleExcelUtil;
     private final LogUtil logUtil;
     private final VisualizationUtil visualizationUtil;
-
     // === Excel导入导出功能 ===
-
     @PostMapping("/excel/import")
     @Operation(summary = "Excel导入", description = "从Excel文件导入数据")
     public Result<List<Map<String, Object>>> importExcel(@RequestParam("file") MultipartFile file) {
         try {
             // 记录操作日志
             LogUtil.logOperation("EXCEL_IMPORT", "system", "导入Excel文件: " + file.getOriginalFilename());
-            
             // 使用简化的Excel工具导入用户数据
             List<Map<String, Object>> result = simpleExcelUtil.importUsersFromExcel(file);
-            
             return Result.success("Excel导入成功", result);
         } catch (Exception e) {
             LogUtil.logError("EXCEL_IMPORT", "导入Excel文件", e);
@@ -56,12 +52,9 @@ public class ComponentController {
         try {
             // 记录操作日志
             LogUtil.logOperation("EXCEL_EXPORT", "system", "导出Excel文件: " + dataType);
-            
             String fileName = dataType + "_" + System.currentTimeMillis() + ".xlsx";
-            
             // 根据数据类型生成不同的导出数据
             List<Map<String, Object>> data = generateExportData(dataType);
-            
             // 使用简化的Excel工具进行导出
             switch (dataType.toLowerCase()) {
                 case "user":
@@ -80,7 +73,6 @@ public class ComponentController {
                             .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
                     excelUtil.exportToExcel(users, fileName, response);
             }
-            
         } catch (Exception e) {
             LogUtil.logError("EXCEL_EXPORT", "导出Excel文件", e);
             log.error("Excel导出失败", e);
@@ -100,7 +92,18 @@ public class ComponentController {
             return Result.failure(500, "获取操作日志失败: " + e.getMessage());
         }
     }
-
+    @PostMapping("/logs/clean")
+    @Operation(summary = "清理过期日志", description = "清理过期的操作日志")
+    public Result<Void> cleanExpiredLogs(@RequestParam(defaultValue = "24") int maxAgeHours) {
+        try {
+            LogUtil.cleanExpiredLogs(maxAgeHours);
+            LogUtil.logOperation("LOG_CLEAN", "system", "清理过期日志，保留" + maxAgeHours + "小时");
+            return Result.success("清理过期日志成功", null);
+        } catch (Exception e) {
+            LogUtil.logError("LOG_MANAGEMENT", "清理过期日志", e);
+            return Result.failure(500, "清理过期日志失败: " + e.getMessage());
+        }
+    }
     @GetMapping("/logs/operation/{logId}")
     @Operation(summary = "获取单个操作日志", description = "根据ID获取操作日志详情")
     public Result<LogUtil.OperationLog> getOperationLog(@PathVariable String logId) {
@@ -114,19 +117,6 @@ public class ComponentController {
         } catch (Exception e) {
             LogUtil.logError("LOG_MANAGEMENT", "获取操作日志", e);
             return Result.failure(500, "获取操作日志失败: " + e.getMessage());
-        }
-    }
-
-    @PostMapping("/logs/clean")
-    @Operation(summary = "清理过期日志", description = "清理过期的操作日志")
-    public Result<Void> cleanExpiredLogs(@RequestParam(defaultValue = "24") int maxAgeHours) {
-        try {
-            LogUtil.cleanExpiredLogs(maxAgeHours);
-            LogUtil.logOperation("LOG_CLEAN", "system", "清理过期日志，保留" + maxAgeHours + "小时");
-            return Result.success("清理过期日志成功", null);
-        } catch (Exception e) {
-            LogUtil.logError("LOG_MANAGEMENT", "清理过期日志", e);
-            return Result.failure(500, "清理过期日志失败: " + e.getMessage());
         }
     }
 

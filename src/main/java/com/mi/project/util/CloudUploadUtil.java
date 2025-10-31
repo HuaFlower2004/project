@@ -1,6 +1,4 @@
 package com.mi.project.util;
-
-
 import com.aliyun.oss.*;
 import com.aliyun.oss.common.auth.CredentialsProviderFactory;
 import com.aliyun.oss.common.auth.EnvironmentVariableCredentialsProvider;
@@ -17,8 +15,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
-
+/**
+ * @author 31591
+ */
 @Component
 @Slf4j
 public class CloudUploadUtil {
@@ -44,7 +43,6 @@ public class CloudUploadUtil {
                 .clientConfiguration(clientBuilderConfiguration)
                 .region(region)
                 .build();
-
         try {
             // 设置文件元数据
             ObjectMetadata metadata = new ObjectMetadata();
@@ -102,7 +100,6 @@ public class CloudUploadUtil {
 
         return uploadLocalFile(file, storageFileName);
     }
-
     /**
      * 上传本地文件到OSS
      * @param file 本地文件对象
@@ -125,37 +122,28 @@ public class CloudUploadUtil {
                 .clientConfiguration(clientBuilderConfiguration)
                 .region(region)
                 .build();
-
         try {
             // 设置文件元数据
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentLength(file.length());
-
             // 根据文件扩展名设置Content-Type
             String contentType = getContentType(file.getName());
             metadata.setContentType(contentType);
-
             // 使用FileInputStream创建PutObjectRequest
             FileInputStream fileInputStream = new FileInputStream(file);
             PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, objectName, fileInputStream);
             putObjectRequest.setMetadata(metadata);
-
             // 上传文件
             ossClient.putObject(putObjectRequest);
-
             // 构建文件URL
             String fileUrl = String.format("https://%s.oss-cn-beijing.aliyuncs.com/%s",
                     bucketName, storageFileName);
-
             log.info("本地文件上传成功: {}", file.getAbsolutePath());
             log.info("存储文件名: {}", storageFileName);
             log.info("文件URL: {}", fileUrl);
-
             // 关闭输入流
             fileInputStream.close();
-
             return fileUrl;
-
         } catch (OSSException oe) {
             log.error("OSS异常: {}", oe.getErrorMessage());
             System.out.println("Caught an OSSException, which means your request made it to OSS, "

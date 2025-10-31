@@ -18,29 +18,24 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 @Component
 public class LogUtil {
-
-    private static final DateTimeFormatter TIMESTAMP_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
-    
+    private static final DateTimeFormatter TIMESTAMP_FORMATTER =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
     // 日志记录器缓存
     private static final Map<String, Logger> loggerCache = new ConcurrentHashMap<>();
-    
     // 操作日志记录
     private static final Map<String, OperationLog> operationLogs = new ConcurrentHashMap<>();
-
     /**
      * 获取日志记录器
      */
     public static Logger getLogger(Class<?> clazz) {
         return getLogger(clazz.getName());
     }
-
     /**
      * 获取日志记录器
      */
     public static Logger getLogger(String name) {
         return loggerCache.computeIfAbsent(name, LoggerFactory::getLogger);
     }
-
     /**
      * 记录操作日志
      */

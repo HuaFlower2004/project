@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -36,12 +37,10 @@ public class ExcelUtil {
                 emptyRow.createCell(0).setCellValue("暂无数据");
                 return;
             }
-
             // 创建标题行
             T firstItem = data.get(0);
             List<String> headers = getHeaders(firstItem.getClass());
             Row headerRow = sheet.createRow(0);
-            
             // 设置标题样式
             CellStyle headerStyle = createHeaderStyle(workbook);
             for (int i = 0; i < headers.size(); i++) {
@@ -49,14 +48,12 @@ public class ExcelUtil {
                 cell.setCellValue(headers.get(i));
                 cell.setCellStyle(headerStyle);
             }
-
             // 填充数据
             for (int i = 0; i < data.size(); i++) {
                 Row row = sheet.createRow(i + 1);
                 T item = data.get(i);
                 fillRowData(row, item, headers);
             }
-
             // 自动调整列宽
             for (int i = 0; i < headers.size(); i++) {
                 sheet.autoSizeColumn(i);
@@ -65,24 +62,20 @@ public class ExcelUtil {
                     sheet.setColumnWidth(i, 15000);
                 }
             }
-
             // 设置响应头
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             response.setCharacterEncoding("UTF-8");
             response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + 
-                    java.net.URLEncoder.encode(fileName, "UTF-8"));
-            
+                    java.net.URLEncoder.encode(fileName, StandardCharsets.UTF_8));
             // 写入响应
             workbook.write(response.getOutputStream());
             response.getOutputStream().flush();
             log.info("Excel导出成功: fileName={}, rows={}", fileName, data.size());
-
         } catch (IOException e) {
             log.error("Excel导出失败: fileName={}", fileName, e);
             throw new RuntimeException("Excel导出失败", e);
         }
     }
-
     /**
      * 从Excel导入数据
      */

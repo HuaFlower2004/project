@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -22,18 +23,15 @@ import java.util.*;
 public class SimpleExcelUtil {
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
     /**
      * 导出用户数据到Excel
      */
     public void exportUsersToExcel(List<Map<String, Object>> userData, String fileName, HttpServletResponse response) {
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("用户数据");
-            
             // 创建标题行
             String[] headers = {"ID", "用户名", "邮箱", "手机号", "状态", "创建时间"};
             Row headerRow = sheet.createRow(0);
-            
             // 设置标题样式
             CellStyle headerStyle = createHeaderStyle(workbook);
             for (int i = 0; i < headers.length; i++) {
@@ -41,7 +39,6 @@ public class SimpleExcelUtil {
                 cell.setCellValue(headers[i]);
                 cell.setCellStyle(headerStyle);
             }
-
             // 填充数据
             for (int i = 0; i < userData.size(); i++) {
                 Row row = sheet.createRow(i + 1);
@@ -54,23 +51,19 @@ public class SimpleExcelUtil {
                 row.createCell(4).setCellValue(user.get("isActive") != null ? (Boolean) user.get("isActive") ? "激活" : "禁用" : "");
                 row.createCell(5).setCellValue(user.get("createdTime") != null ? user.get("createdTime").toString() : "");
             }
-
             // 自动调整列宽
             for (int i = 0; i < headers.length; i++) {
                 sheet.autoSizeColumn(i);
             }
-
             // 设置响应头
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             response.setCharacterEncoding("UTF-8");
             response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + 
-                    java.net.URLEncoder.encode(fileName, "UTF-8"));
-            
+                    java.net.URLEncoder.encode(fileName, StandardCharsets.UTF_8));
             // 写入响应
             workbook.write(response.getOutputStream());
             response.getOutputStream().flush();
             log.info("用户数据Excel导出成功: fileName={}, rows={}", fileName, userData.size());
-
         } catch (IOException e) {
             log.error("用户数据Excel导出失败: fileName={}", fileName, e);
             throw new RuntimeException("Excel导出失败", e);

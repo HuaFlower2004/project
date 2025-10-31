@@ -13,7 +13,6 @@ import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-
 /**
  * 负载均衡控制器
  * 提供负载均衡相关的监控和管理功能
@@ -24,15 +23,31 @@ import java.util.Map;
 @Tag(name = "负载均衡管理", description = "负载均衡监控和管理")
 @CrossOrigin(origins = {"http://192.168.93.182:5174", "http://192.168.93.182:5173"})
 public class LoadBalancerController {
-
     @Value("${server.port:9090}")
     private String serverPort;
-
     @Value("${spring.application.name:project}")
     private String applicationName;
-    
     // 请求计数器（每个端口实例独立计数）
     private static final java.util.concurrent.atomic.AtomicLong requestCount = new java.util.concurrent.atomic.AtomicLong(0);
+    @GetMapping("/test/count")
+    @Operation(summary = "负载均衡测试计数", description = "测试负载均衡请求分发，记录每个端口接收的请求数")
+    public Result<Map<String, Object>> testLoadBalancerCount(HttpServletRequest request) {
+        // 增加计数器
+        long currentCount = requestCount.incrementAndGet();
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("server_port", serverPort);
+        result.put("request_count", currentCount);
+        result.put("server_ip", getServerIP());
+        result.put("client_ip", getClientIP(request));
+        result.put("timestamp", LocalDateTime.now());
+        result.put("message", String.format("端口 %s 已接收 %d 次请求", serverPort, currentCount));
+
+        log.info("负载均衡测试请求 - 端口: {}, 计数: {}, 客户端IP: {}",
+                serverPort, currentCount, getClientIP(request));
+
+        return Result.success("请求已记录", result);
+    }
 
     @GetMapping("/health")
     @Operation(summary = "健康检查", description = "用于负载均衡器的健康检查")
@@ -169,25 +184,7 @@ public class LoadBalancerController {
      * 负载均衡测试接口 - 记录请求并返回当前端口统计
      * 用于测试负载均衡分发效果
      */
-    @GetMapping("/test/count")
-    @Operation(summary = "负载均衡测试计数", description = "测试负载均衡请求分发，记录每个端口接收的请求数")
-    public Result<Map<String, Object>> testLoadBalancerCount(HttpServletRequest request) {
-        // 增加计数器
-        long currentCount = requestCount.incrementAndGet();
-        
-        Map<String, Object> result = new HashMap<>();
-        result.put("server_port", serverPort);
-        result.put("request_count", currentCount);
-        result.put("server_ip", getServerIP());
-        result.put("client_ip", getClientIP(request));
-        result.put("timestamp", LocalDateTime.now());
-        result.put("message", String.format("端口 %s 已接收 %d 次请求", serverPort, currentCount));
-        
-        log.info("负载均衡测试请求 - 端口: {}, 计数: {}, 客户端IP: {}", 
-                serverPort, currentCount, getClientIP(request));
-        
-        return Result.success("请求已记录", result);
-    }
+
     
     /**
      * 获取当前端口的请求统计
