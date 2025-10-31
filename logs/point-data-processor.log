@@ -5410,3 +5410,12 @@ Caused by: java.net.BindException: Address already in use: bind
 2025-10-31 12:04:17 [master:housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - master - After  cleanup stats (total=5/20, idle=5/5, active=0, waiting=0)
 2025-10-31 12:04:17 [master:housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - master - Fill pool skipped, pool has sufficient level or currently being filled.
 2025-10-31 12:04:29 [master:housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - master - keepalive: connection com.mysql.cj.jdbc.ConnectionImpl@6fddb897 is alive
+2025-10-31 12:04:45 [master:housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - master - keepalive: connection com.mysql.cj.jdbc.ConnectionImpl@1ff44a27 is alive
+2025-10-31 12:04:47 [master:housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - master - Before cleanup stats (total=5/20, idle=5/5, active=0, waiting=0)
+2025-10-31 12:04:47 [master:housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - master - After  cleanup stats (total=5/20, idle=5/5, active=0, waiting=0)
+2025-10-31 12:04:47 [master:housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - master - Fill pool skipped, pool has sufficient level or currently being filled.
+2025-10-31 12:04:53 [master:housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - master - keepalive: connection com.mysql.cj.jdbc.ConnectionImpl@2dc319cf is alive
+2025-10-31 12:04:55 [master:housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - master - keepalive: connection com.mysql.cj.jdbc.ConnectionImpl@3ee6bf53 is alive
+2025-10-31 12:05:17 [master:housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - master - Before cleanup stats (total=5/20, idle=5/5, active=0, waiting=0)
+2025-10-31 12:05:17 [master:housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - master - After  cleanup stats (total=5/20, idle=5/5, active=0, waiting=0)
+2025-10-31 12:05:17 [master:housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - master - Fill pool skipped, pool has sufficient level or currently being filled.
