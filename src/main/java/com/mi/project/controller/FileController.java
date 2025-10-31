@@ -55,7 +55,6 @@ public class FileController {
         }
         return fileContent;
     }
-
     @PostMapping("/upload")
     @Operation(summary = "上传雷达文件（支持.las文件和.zip压缩包）")
     @ResponseBody
@@ -64,9 +63,6 @@ public class FileController {
                                    @RequestParam(value = "description",required = false) String description,
                                    @RequestParam("userName") String userName,
                                    HttpServletRequest request) {
-
-
-
         log.info("文件上传接口被调用，文件名: {}", multipartFile.getOriginalFilename());
 
         FileUploadDTO uploadDTO = FileUploadDTO.builder()
@@ -93,7 +89,6 @@ public class FileController {
                     "  }\n" +
                     "}");
             return Result.success( "文件上传成功，正在处理中...",file);
-
         } catch (Exception e) {
             log.error("文件上传失败: {}", e.getMessage(), e);
             return Result.failure(500,"文件上传失败: "+e.getMessage());

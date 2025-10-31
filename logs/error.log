@@ -1,0 +1,3 @@
+2025/10/31 11:59:56 [warn] 26080#3760: "user" is not supported, ignored in C:\Users\31591\Desktop\project\nginx.conf:5
+2025/10/31 11:59:56 [emerg] 26080#3760: invalid event type "epoll" in C:\Users\31591\Desktop\project\nginx.conf:13
+2025/10/31 12:02:36 [emerg] 30040#34560: CreateFile() "C:\Users\31591\Desktop\project\mime.types" failed (2: The system cannot find the file specified) in C:\Users\31591\Desktop\project\nginx.conf:17

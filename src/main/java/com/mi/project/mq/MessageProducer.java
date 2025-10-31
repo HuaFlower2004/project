@@ -16,13 +16,8 @@ public class MessageProducer {
     private final RabbitTemplate rabbitTemplate;
     public MessageProducer(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
-        // 配置消息返回回调
-        this.rabbitTemplate.setReturnsCallback(returned -> {
-            log.error("消息发送失败，返回消息: {}, 路由键: {}, 交换机: {}",
-                    returned.getMessage(),
-                    returned.getRoutingKey(),
-                    returned.getExchange());
-        });
+        // 注意：ReturnsCallback 已在 RabbitConfig 中统一配置，这里不再重复设置
+        // 如果需要记录业务日志，可以在发送消息的方法中单独处理
     }
     /**
      * 发送文件处理消息

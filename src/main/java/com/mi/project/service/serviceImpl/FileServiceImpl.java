@@ -54,9 +54,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements IF
     public File uploadFile(FileUploadDTO uploadDTO, User user) {
         try {
             MultipartFile multipartFile = uploadDTO.getFile();
-            // 存储文件相对路径和文件名字都在里面。
             List<String> result = fileStorageUtil.storeFile(multipartFile, user.getUserName());
-            // 创建文件记录
             LocalDateTime localDateTime = LocalDateTime.now();
             File file = File.builder()
                     .fileName(multipartFile.getOriginalFilename())
@@ -66,14 +64,12 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements IF
                     .userName(uploadDTO.getUserName())
                     .uploadTime(LocalDateTime.now())
                     .fileUrl(result.get(3))
-                    .fileStatus(FileStatus.UPLOADED) // 已上传状态
+                    .fileStatus(FileStatus.UPLOADED)
                     .fileType(result.get(2))
                     .fileSize((int) multipartFile.getSize())
                     .user(user)
                     .build();
             File savedFile = fileRepository.save(file);
-
-            // --- ⬇️ 改为通过MQ推送文件处理消息 --
             FileProcessMessage msg = FileProcessMessage.create(
                 savedFile.getId(),
                 savedFile.getFileName(),
@@ -83,11 +79,9 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements IF
                 user.getId(),
                 user.getUserName()
             );
-            // 可以补充参数、其他业务信息
             messageProducer.sendFileProcessMessage(msg);
             log.info("文件处理消息已推送到队列，等待异步消费 fileId={}", savedFile.getId());
             return savedFile;
-
         } catch (Exception e) {
             log.error("文件上传失败: {}", e.getMessage(), e);
             throw new RuntimeException("文件上传失败: " + e.getMessage());

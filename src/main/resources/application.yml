@@ -97,7 +97,7 @@ server:
       force-request: true
       force-response: true
   address: 0.0.0.0
-  port: 9090
+  port: 8081
 
 # Swagger/Knife4j配置
 springdoc:

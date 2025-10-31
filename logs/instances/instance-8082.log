@@ -1,0 +1,259 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.5.3)
+
+2025-10-31 11:37:20 [main] INFO  com.mi.project.ProjectApplication - Starting ProjectApplication v0.0.1-SNAPSHOT using Java 21.0.8 with PID 1968 (C:\Users\31591\Desktop\project\target\project-0.0.1-SNAPSHOT.jar started by 31591 in C:\Users\31591\Desktop\project)
+2025-10-31 11:37:20 [main] DEBUG com.mi.project.ProjectApplication - Running with Spring Boot v3.5.3, Spring v6.2.9
+2025-10-31 11:37:20 [main] INFO  com.mi.project.ProjectApplication - The following 2 profiles are active: "datasource", "redis"
+2025-10-31 11:37:24 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-10-31 11:37:24 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-10-31 11:37:24 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 395 ms. Found 3 JPA repository interfaces.
+2025-10-31 11:37:24 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-10-31 11:37:24 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-10-31 11:37:24 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.mi.project.repository.FileRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-10-31 11:37:24 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.mi.project.repository.PointDataRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-10-31 11:37:24 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.mi.project.repository.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-10-31 11:37:24 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 13 ms. Found 0 Redis repository interfaces.
+2025-10-31 11:37:28 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8082 (http)
+2025-10-31 11:37:28 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-10-31 11:37:28 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-10-31 11:37:28 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-10-31 11:37:28 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 8428 ms
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - Class com.mysql.cj.jdbc.Driver found in Thread context class loader org.springframework.boot.loader.launch.LaunchedClassLoader@1a6c5a9e
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - master - configuration:
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - allowPoolSuspension.............false
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - autoCommit......................true
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - catalog.........................none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - connectionInitSql...............none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - connectionTestQuery.............none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - connectionTimeout...............30000
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - credentials.....................com.zaxxer.hikari.util.Credentials@c697186
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - dataSource......................none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - dataSourceClassName.............none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - dataSourceJNDI..................none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - dataSourceProperties............{password=<masked>}
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - driverClassName................."com.mysql.cj.jdbc.Driver"
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - exceptionOverride...............none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - exceptionOverrideClassName......none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - healthCheckProperties...........{}
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - healthCheckRegistry.............none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - idleTimeout.....................600000
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - initializationFailTimeout.......1
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - isolateInternalQueries..........false
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - jdbcUrl.........................jdbc:mysql://localhost:3306/project?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - keepaliveTime...................120000
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - leakDetectionThreshold..........0
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - maxLifetime.....................1800000
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - maximumPoolSize.................20
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - metricRegistry..................none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - metricsTrackerFactory...........none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - minimumIdle.....................5
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - password........................<masked>
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - poolName........................"master"
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - readOnly........................false
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - registerMbeans..................false
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - scheduledExecutor...............none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - schema..........................none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - threadFactory...................internal
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - transactionIsolation............default
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - username........................"root"
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - validationTimeout...............5000
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - Class com.mysql.cj.jdbc.Driver found in Thread context class loader org.springframework.boot.loader.launch.LaunchedClassLoader@1a6c5a9e
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - slave1 - configuration:
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - allowPoolSuspension.............false
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - autoCommit......................true
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - catalog.........................none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - connectionInitSql...............none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - connectionTestQuery.............none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - connectionTimeout...............30000
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - credentials.....................com.zaxxer.hikari.util.Credentials@7f64bd7
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - dataSource......................none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - dataSourceClassName.............none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - dataSourceJNDI..................none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - dataSourceProperties............{password=<masked>}
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - driverClassName................."com.mysql.cj.jdbc.Driver"
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - exceptionOverride...............none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - exceptionOverrideClassName......none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - healthCheckProperties...........{}
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - healthCheckRegistry.............none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - idleTimeout.....................600000
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - initializationFailTimeout.......1
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - isolateInternalQueries..........false
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - jdbcUrl.........................jdbc:mysql://192.168.108.153:3306/project?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - keepaliveTime...................120000
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - leakDetectionThreshold..........0
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - maxLifetime.....................1800000
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - maximumPoolSize.................15
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - metricRegistry..................none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - metricsTrackerFactory...........none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - minimumIdle.....................3
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - password........................<masked>
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - poolName........................"slave1"
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - readOnly........................false
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - registerMbeans..................false
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - scheduledExecutor...............none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - schema..........................none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - threadFactory...................internal
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - transactionIsolation............default
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - username........................"root"
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - validationTimeout...............5000
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - Class com.mysql.cj.jdbc.Driver found in Thread context class loader org.springframework.boot.loader.launch.LaunchedClassLoader@1a6c5a9e
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - slave2 - configuration:
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - allowPoolSuspension.............false
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - autoCommit......................true
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - catalog.........................none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - connectionInitSql...............none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - connectionTestQuery.............none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - connectionTimeout...............30000
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - credentials.....................com.zaxxer.hikari.util.Credentials@1c79d093
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - dataSource......................none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - dataSourceClassName.............none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - dataSourceJNDI..................none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - dataSourceProperties............{password=<masked>}
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - driverClassName................."com.mysql.cj.jdbc.Driver"
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - exceptionOverride...............none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - exceptionOverrideClassName......none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - healthCheckProperties...........{}
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - healthCheckRegistry.............none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - idleTimeout.....................600000
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - initializationFailTimeout.......1
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - isolateInternalQueries..........false
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - jdbcUrl.........................jdbc:mysql://192.168.108.154:3306/project?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - keepaliveTime...................120000
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - leakDetectionThreshold..........0
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - maxLifetime.....................1800000
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - maximumPoolSize.................15
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - metricRegistry..................none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - metricsTrackerFactory...........none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - minimumIdle.....................3
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - password........................<masked>
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - poolName........................"slave2"
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - readOnly........................false
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - registerMbeans..................false
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - scheduledExecutor...............none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - schema..........................none
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - threadFactory...................internal
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - transactionIsolation............default
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - username........................"root"
+2025-10-31 11:37:30 [main] DEBUG com.zaxxer.hikari.HikariConfig - validationTimeout...............5000
+2025-10-31 11:37:30 [main] INFO  c.b.d.d.DynamicRoutingDataSource - dynamic-datasource - add a datasource named [slave2] success
+2025-10-31 11:37:30 [main] INFO  c.b.d.d.DynamicRoutingDataSource - dynamic-datasource - add a datasource named [slave1] success
+2025-10-31 11:37:30 [main] INFO  c.b.d.d.DynamicRoutingDataSource - dynamic-datasource - add a datasource named [master] success
+2025-10-31 11:37:30 [main] INFO  c.b.d.d.DynamicRoutingDataSource - dynamic-datasource initial loaded [3] datasource,primary datasource named [master]
+2025-10-31 11:37:31 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - master - configuration:
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - allowPoolSuspension.............false
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - autoCommit......................true
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - catalog.........................none
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - connectionInitSql...............none
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - connectionTestQuery.............none
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - connectionTimeout...............30000
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - credentials.....................com.zaxxer.hikari.util.Credentials@c697186
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - dataSource......................none
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - dataSourceClassName.............none
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - dataSourceJNDI..................none
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - dataSourceProperties............{password=<masked>}
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - driverClassName................."com.mysql.cj.jdbc.Driver"
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - exceptionOverride...............none
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - exceptionOverrideClassName......none
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - healthCheckProperties...........{}
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - healthCheckRegistry.............none
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - idleTimeout.....................600000
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - initializationFailTimeout.......1
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - isolateInternalQueries..........false
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - jdbcUrl.........................jdbc:mysql://localhost:3306/project?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - keepaliveTime...................120000
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - leakDetectionThreshold..........0
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - maxLifetime.....................1800000
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - maximumPoolSize.................20
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - metricRegistry..................none
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - metricsTrackerFactory...........none
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - minimumIdle.....................5
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - password........................<masked>
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - poolName........................"master"
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - readOnly........................false
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - registerMbeans..................false
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - scheduledExecutor...............none
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - schema..........................none
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - threadFactory...................internal
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - transactionIsolation............default
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - username........................"root"
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.HikariConfig - validationTimeout...............5000
+2025-10-31 11:37:31 [main] INFO  com.zaxxer.hikari.HikariDataSource - master - Starting...
+2025-10-31 11:37:31 [main] DEBUG com.zaxxer.hikari.pool.PoolBase - master - Attempting to create/setup new connection (04e986b6-4915-4f7a-9321-d30278be2591)
+2025-10-31 11:37:32 [main] DEBUG com.zaxxer.hikari.pool.PoolBase - master - Established new connection (04e986b6-4915-4f7a-9321-d30278be2591)
+2025-10-31 11:37:32 [main] INFO  com.zaxxer.hikari.pool.HikariPool - master - Added connection com.mysql.cj.jdbc.ConnectionImpl@5c40402c
+2025-10-31 11:37:32 [main] INFO  com.zaxxer.hikari.HikariDataSource - master - Start completed.
+2025-10-31 11:37:32 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-10-31 11:37:32 [main] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-10-31 11:37:32 [master:housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - master - Before cleanup stats (total=1/20, idle=0/5, active=1, waiting=0)
+2025-10-31 11:37:32 [master:housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - master - After  cleanup stats (total=1/20, idle=0/5, active=1, waiting=0)
+2025-10-31 11:37:32 [master:connection-adder] DEBUG com.zaxxer.hikari.pool.PoolBase - master - Attempting to create/setup new connection (ee551b93-647d-4569-a204-4abe5652c63a)
+2025-10-31 11:37:32 [master:connection-adder] DEBUG com.zaxxer.hikari.pool.PoolBase - master - Established new connection (ee551b93-647d-4569-a204-4abe5652c63a)
+2025-10-31 11:37:32 [master:connection-adder] DEBUG com.zaxxer.hikari.pool.HikariPool - master - Added connection com.mysql.cj.jdbc.ConnectionImpl@67f5c72c
+2025-10-31 11:37:32 [master:connection-adder] DEBUG com.zaxxer.hikari.pool.HikariPool - master - After adding stats (total=2/20, idle=2/5, active=0, waiting=0)
+2025-10-31 11:37:32 [master:connection-adder] DEBUG com.zaxxer.hikari.pool.PoolBase - master - Attempting to create/setup new connection (46000cfc-5d40-4525-884d-11e99fc693c9)
+2025-10-31 11:37:32 [master:connection-adder] DEBUG com.zaxxer.hikari.pool.PoolBase - master - Established new connection (46000cfc-5d40-4525-884d-11e99fc693c9)
+2025-10-31 11:37:32 [master:connection-adder] DEBUG com.zaxxer.hikari.pool.HikariPool - master - Added connection com.mysql.cj.jdbc.ConnectionImpl@26c8cd17
+2025-10-31 11:37:32 [master:connection-adder] DEBUG com.zaxxer.hikari.pool.HikariPool - master - After adding stats (total=3/20, idle=3/5, active=0, waiting=0)
+2025-10-31 11:37:32 [master:connection-adder] DEBUG com.zaxxer.hikari.pool.PoolBase - master - Attempting to create/setup new connection (68a76e27-2a62-4318-b331-eccad8fefc11)
+2025-10-31 11:37:32 [master:connection-adder] DEBUG com.zaxxer.hikari.pool.PoolBase - master - Established new connection (68a76e27-2a62-4318-b331-eccad8fefc11)
+2025-10-31 11:37:32 [master:connection-adder] DEBUG com.zaxxer.hikari.pool.HikariPool - master - Added connection com.mysql.cj.jdbc.ConnectionImpl@17a44c1f
+2025-10-31 11:37:32 [master:connection-adder] DEBUG com.zaxxer.hikari.pool.HikariPool - master - After adding stats (total=4/20, idle=4/5, active=0, waiting=0)
+2025-10-31 11:37:32 [master:connection-adder] DEBUG com.zaxxer.hikari.pool.PoolBase - master - Attempting to create/setup new connection (6f4490c9-ae66-4971-bffc-73372c5985a8)
+2025-10-31 11:37:32 [master:connection-adder] DEBUG com.zaxxer.hikari.pool.PoolBase - master - Established new connection (6f4490c9-ae66-4971-bffc-73372c5985a8)
+2025-10-31 11:37:32 [master:connection-adder] DEBUG com.zaxxer.hikari.pool.HikariPool - master - Added connection com.mysql.cj.jdbc.ConnectionImpl@46e73258
+2025-10-31 11:37:32 [master:connection-adder] DEBUG com.zaxxer.hikari.pool.HikariPool - master - After adding stats (total=5/20, idle=5/5, active=0, waiting=0)
+2025-10-31 11:37:32 [master:connection-adder] DEBUG com.zaxxer.hikari.pool.HikariPool - master - Connection not added, stats (total=5/20, idle=5/5, active=0, waiting=0)
+2025-10-31 11:37:34 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+ _ _   |_  _ _|_. ___ _ |    _ 
+| | |\/|_)(_| | |_\  |_)||_|_\ 
+     /               |         
+                        3.5.12 
+2025-10-31 11:37:41 [main] INFO  c.m.p.rmi.server.RmiBootStarter - RMI注册中心启动成功，端口: 1099
+2025-10-31 11:37:41 [main] INFO  c.m.p.rmi.server.RmiBootStarter - HelloService 已注册，端口: 20001
+2025-10-31 11:37:41 [main] INFO  c.m.p.rmi.server.RmiBootStarter - PowerLineAnalysisService 已注册，端口: 20002
+2025-10-31 11:37:41 [main] INFO  c.m.p.rmi.server.RmiBootStarter - FileRmiService 已注册，端口: 20003
+2025-10-31 11:37:41 [main] INFO  c.m.p.rmi.server.RmiBootStarter - 所有RMI服务启动完成！
+2025-10-31 11:37:41 [main] INFO  c.m.p.rmi.server.RmiBootStarter - 服务列表:
+2025-10-31 11:37:41 [main] INFO  c.m.p.rmi.server.RmiBootStarter -   - HelloService: rmi://192.168.181.152:1099/HelloService
+2025-10-31 11:37:41 [main] INFO  c.m.p.rmi.server.RmiBootStarter -   - PowerLineAnalysisService: rmi://192.168.181.152:1099/PowerLineAnalysisService
+2025-10-31 11:37:41 [main] INFO  c.m.p.rmi.server.RmiBootStarter -   - FileRmiService: rmi://192.168.181.152:1099/FileRmiService
+2025-10-31 11:37:43 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-10-31 11:37:43 [main] INFO  c.m.p.config.LoadBalancerConfig - CORS配置已启用，支持负载均衡跨域访问
+2025-10-31 11:37:45 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2025-10-31 11:37:45 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-10-31 11:37:46 [main] WARN  o.s.s.c.a.w.c.AuthorizeHttpRequestsConfigurer$AuthorizationManagerRequestMatcherRegistry - One of the patterns in [OPTIONS, /**] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-10-31 11:37:47 [main] INFO  c.b.m.e.s.MybatisPlusApplicationContextAware - Register ApplicationContext instances org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@5ddabb18
+2025-10-31 11:37:48 [main] INFO  org.quartz.impl.StdSchedulerFactory - Using default implementation for ThreadExecutor
+2025-10-31 11:37:48 [main] INFO  o.quartz.core.SchedulerSignalerImpl - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+2025-10-31 11:37:48 [main] INFO  org.quartz.core.QuartzScheduler - Quartz Scheduler v2.5.0 created.
+2025-10-31 11:37:48 [main] INFO  org.quartz.simpl.RAMJobStore - RAMJobStore initialized.
+2025-10-31 11:37:48 [main] INFO  org.quartz.core.QuartzScheduler - Scheduler meta-data: Quartz Scheduler (v2.5.0) 'quartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+2025-10-31 11:37:48 [main] INFO  org.quartz.impl.StdSchedulerFactory - Quartz scheduler 'quartzScheduler' initialized from an externally provided properties instance.
+2025-10-31 11:37:48 [main] INFO  org.quartz.impl.StdSchedulerFactory - Quartz scheduler version: 2.5.0
+2025-10-31 11:37:48 [main] INFO  org.quartz.core.QuartzScheduler - JobFactory set to: org.springframework.scheduling.quartz.SpringBeanJobFactory@5a6029d9
+2025-10-31 11:37:48 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - JSqlParser is in classpath; If applicable, JSqlParser will be used.
+2025-10-31 11:37:48 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-10-31 11:37:50 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8082 (http) with context path '/'
+2025-10-31 11:37:50 [main] INFO  o.s.a.r.c.CachingConnectionFactory - Attempting to connect to: [localhost:5672]
+2025-10-31 11:37:50 [main] INFO  o.s.a.r.c.CachingConnectionFactory - Created new connection: rabbitConnectionFactory#69e67993:0/SimpleConnection@7a39194f [delegate=amqp://guest@127.0.0.1:5672/, localPort=63250]
+2025-10-31 11:37:50 [main] INFO  o.s.s.quartz.SchedulerFactoryBean - Starting Quartz Scheduler now
+2025-10-31 11:37:50 [main] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED started.
+2025-10-31 11:37:50 [main] DEBUG o.s.d.r.l.RedisMessageListenerContainer - Starting RedisMessageListenerContainer...
+2025-10-31 11:37:50 [main] DEBUG o.s.d.r.l.RedisMessageListenerContainer - Postpone listening for Redis messages until actual listeners are added
+2025-10-31 11:37:50 [main] INFO  com.mi.project.ProjectApplication - Started ProjectApplication in 31.709 seconds (process running for 33.192)
+^C

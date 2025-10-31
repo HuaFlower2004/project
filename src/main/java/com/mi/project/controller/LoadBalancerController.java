@@ -30,6 +30,9 @@ public class LoadBalancerController {
 
     @Value("${spring.application.name:project}")
     private String applicationName;
+    
+    // 请求计数器（每个端口实例独立计数）
+    private static final java.util.concurrent.atomic.AtomicLong requestCount = new java.util.concurrent.atomic.AtomicLong(0);
 
     @GetMapping("/health")
     @Operation(summary = "健康检查", description = "用于负载均衡器的健康检查")
@@ -160,6 +163,64 @@ public class LoadBalancerController {
             log.error("获取会话信息失败", e);
             return Result.failure(500, "获取会话信息失败: " + e.getMessage());
         }
+    }
+    
+    /**
+     * 负载均衡测试接口 - 记录请求并返回当前端口统计
+     * 用于测试负载均衡分发效果
+     */
+    @GetMapping("/test/count")
+    @Operation(summary = "负载均衡测试计数", description = "测试负载均衡请求分发，记录每个端口接收的请求数")
+    public Result<Map<String, Object>> testLoadBalancerCount(HttpServletRequest request) {
+        // 增加计数器
+        long currentCount = requestCount.incrementAndGet();
+        
+        Map<String, Object> result = new HashMap<>();
+        result.put("server_port", serverPort);
+        result.put("request_count", currentCount);
+        result.put("server_ip", getServerIP());
+        result.put("client_ip", getClientIP(request));
+        result.put("timestamp", LocalDateTime.now());
+        result.put("message", String.format("端口 %s 已接收 %d 次请求", serverPort, currentCount));
+        
+        log.info("负载均衡测试请求 - 端口: {}, 计数: {}, 客户端IP: {}", 
+                serverPort, currentCount, getClientIP(request));
+        
+        return Result.success("请求已记录", result);
+    }
+    
+    /**
+     * 获取当前端口的请求统计
+     */
+    @GetMapping("/test/stats")
+    @Operation(summary = "获取请求统计", description = "获取当前端口实例的请求统计信息")
+    public Result<Map<String, Object>> getRequestStats() {
+        Map<String, Object> stats = new HashMap<>();
+        stats.put("server_port", serverPort);
+        stats.put("total_requests", requestCount.get());
+        stats.put("server_ip", getServerIP());
+        stats.put("application_name", applicationName);
+        stats.put("timestamp", LocalDateTime.now());
+        
+        return Result.success("获取统计成功", stats);
+    }
+    
+    /**
+     * 重置计数器（用于测试）
+     */
+    @PostMapping("/test/reset")
+    @Operation(summary = "重置计数器", description = "重置当前端口实例的请求计数器")
+    public Result<Map<String, Object>> resetCounter() {
+        long oldCount = requestCount.getAndSet(0);
+        Map<String, Object> result = new HashMap<>();
+        result.put("server_port", serverPort);
+        result.put("previous_count", oldCount);
+        result.put("current_count", 0);
+        result.put("message", "计数器已重置");
+        
+        log.info("重置计数器 - 端口: {}, 重置前计数: {}", serverPort, oldCount);
+        
+        return Result.success("计数器已重置", result);
     }
 
     /**
